@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Create an Account</title>
+<!--CSS-->
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    <!--JQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--Moment.js-->
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+     <!--FIREBASE LINK-->
+     <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+    <!--BOOTSTRAP-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bonbon|Clicker+Script" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Rouge+Script" rel="stylesheet">
+    
+</head>
+<body>
+    <header>
+      
+       
+
+        <nav class="navbar">
+                <a class="navbar-brand" href="calendar.html">Ultimate Organizer</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+        
+
+        <header id="masthead">
+                <div class="container">
+                 
+                        <nav>
+                            <a href="calendar.html">Home</a>
+                            <a href="login.html">Log In</a>  
+                        </nav>
+                </div>  
+        </header>
+
+      </header>
+ 
+    <div id="validation-errors"></div>
+
+  
+
+ 
+    
+    <div id="information"></div>
+
+ 
+
+    <form id="account-form">
+        <div id="accountform">
+            <div class="form-group">
+            <div id="Login">
+
+                <h2 id="create-account-title">Create An Account</h2>
+
+              <label for="exampleInputEmail1">E-mail</label>
+              <div id="font">
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+              <small id="emailHelp" class="form-text text-muted"></small>
+              </div>
+            
+        
+            <div class="form-group">
+              <label for="yourname">First Name</label>
+              <div id="font">
+              <input type="firstname" class="form-control" id="yourname" placeholder="John" pattern="/^[A-Za-z\s-]+$/">
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <div id="font">
+                <input type="lastname" class="form-control" id="lastname" placeholder="Doe" pattern="/^[A-Za-z\s-]+$/">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <div id="font">
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <div id="font">
+                <input type="password" class="form-control" id="confirm-password" placeholder="Password">
+                </div>
+             </div>
+            <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </div>
+    </form>
+
+ 
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Log In/Register</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Organize This!
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="#">Calendar</a>
+                  <a class="dropdown-item" href="#">To Do List</a>
+                  <a class="dropdown-item" href="#">Grocery List</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+              </li>
+            </ul>
+            <form class="searchbutton">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+          </div>
+        </nav>   
+  </nav>
+
+
+   <!-- Footer -->
+   <footer class="footer">
+
+        <!-- Copyright -->
+            <div class="footer-copyright text-center py-3">© 2018 Copyright
+                <a href="https://mdbootstrap.com/bootstrap-tutorial/"></a>
+            </div>
+      
+        </footer>
+        <!-- Footer -->
+
+    <!--JavaScript-->
+    <script src="js/create-account.js"></script>
+</body>
+</html>
+
+
+
