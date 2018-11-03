@@ -31,8 +31,10 @@ module.exports = function (sequelize, DataTypes) {
         Event_Type: {
             type: DataTypes.INTEGER
         },
-        User_Id: {
+        Manual_UserId: {
             type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: false,
             allowNull: false
         }
     });

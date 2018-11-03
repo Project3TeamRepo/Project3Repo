@@ -21,9 +21,10 @@
 --done (React)
 
 * Must have folder structure that meets MVC Paradigm
-
+--done
 
 * Must meet good quality coding standards (indentation, scoping, naming)
 --done
 
 * Must not expose sensitive API key information on the server, see [Protecting-API-Keys-In-Node.md](../../../../01-Class-Content/10-nodejs/03-Supplemental/Protecting-API-Keys-In-Node.md)
+--done
