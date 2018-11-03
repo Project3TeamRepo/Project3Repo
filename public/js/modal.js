@@ -28,7 +28,7 @@ function openmodal() {
                     location: location,
                     userid: 1
                 };
-                //console.log(eventObject);
+                console.log(eventObject);
 
                 $.post("/api/calendars", eventObject, function (res) {
                     $dialogContent.dialog("close");

@@ -9,7 +9,7 @@ var db = require("../models");
 module.exports = function (app) {
   // Create all our routes and set up logic within those routes where required.
   app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, "../public/login.html"));
+    res.sendFile(path.join(__dirname, "../views/calendar.handlebars"));
   });
 
   app.get('/favicon.ico', function (req, res) {
@@ -46,15 +46,14 @@ module.exports = function (app) {
   });
 
   app.post("/api/calendars", function (req, res) {
-    //console.log(req.body);
+    console.log(req.body);
     db.calendars.create(
       {
-        eventTypeId: req.body.type,
         Event_Name: req.body.name,
         Start_Date: req.body.start_date,
         Event_Info: req.body.info,
         Location: req.body.location,
-        userId: req.body.userid
+        User_Id: req.body.userid
       })
       .then(function (result) {
         // Send back the ID of the new quote

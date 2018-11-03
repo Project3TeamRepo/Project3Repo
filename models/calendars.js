@@ -27,19 +27,14 @@ module.exports = function (sequelize, DataTypes) {
             validate: {
                 len: [1, 40]
             }
+        },
+        Event_Type: {
+            type: DataTypes.INTEGER
+        },
+        User_Id: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     });
-    Calendars.associate = function (models) {
-        Calendars.belongsTo(models.users, {
-            foreignKey: {
-                allowNull: false
-            }
-        });
-        Calendars.belongsTo(models.event_types, {
-            foreignKey: {
-                allowNull: false
-            }
-        });
-    };
     return Calendars;
 };
