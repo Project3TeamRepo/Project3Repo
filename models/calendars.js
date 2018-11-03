@@ -30,12 +30,6 @@ module.exports = function (sequelize, DataTypes) {
         },
         Event_Type: {
             type: DataTypes.INTEGER
-        },
-        Manual_UserId: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: false,
-            allowNull: false
         }
     });
     return Calendars;

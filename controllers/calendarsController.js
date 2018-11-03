@@ -53,6 +53,7 @@ module.exports = function (app) {
         Start_Date: req.body.start_date,
         Event_Info: req.body.info,
         Location: req.body.location,
+        Event_Type: req.body.type,
         User_Id: req.body.userid
       })
       .then(function (result) {
