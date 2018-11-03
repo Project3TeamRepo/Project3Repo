@@ -24,8 +24,11 @@ module.exports = function (sequelize, DataTypes) {
     Active: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
+    },
+    Manual_UserId: {
+      autoIncrement: true,
+      primaryKey: false
     }
-
   });
 
   return Users;
