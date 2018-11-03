@@ -32,7 +32,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.INTEGER
         },
         User_Id: {
-            type: DataTypes.Integer
+            type: DataTypes.INTEGER
         }
     });
     return Calendars;
