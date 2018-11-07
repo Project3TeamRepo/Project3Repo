@@ -1,0 +1,27 @@
+#title {
+
+    text-align:center;
+    
+}
+
+.jumbotron {
+   
+    background-image: url('../images/family.png');
+    background-size: 17%;
+    background-repeat: no-repeat;
+    padding: 50px;
+
+
+}
+
+#main-text {
+    text-align: center;
+}
+
+#login {
+    align-content: center;
+}
+
+#signup {
+    align-content: center;
+}
