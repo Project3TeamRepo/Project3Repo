@@ -1,5 +1,3 @@
-
-    
 <nav>
 <nav class="navbar navbar-expand-md navbar-dark">
 
@@ -38,7 +36,13 @@
                 </div>
               </nav>   
         </nav>
-
+<div>
+          <ul id="calendarUL" class="list-group">
+            {{#each calendars}}
+              {{> calendars/calendar-block }}
+            {{/each}}
+          </ul>
+</div>
         <!-- Footer -->
          <footer class="footer">
         <!-- Copyright -->
@@ -52,7 +56,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
   crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/"></script>
-<script src="js/modal.js"></script>
+
 
    <div><a href="javascript:openmodal();">Add an Event</a></div>
    <div id="event_edit_container" class="eventCreator">
@@ -87,6 +91,7 @@
           <td style="text-align: left;"><input type="text" id="location" name="location"></td>
           </tr>
           </table>
+          <span onclick="newEvent()" class="addBtn" name="Save">Save</span>
       </form>
    </div>
   </div>

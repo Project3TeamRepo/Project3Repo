@@ -1,10 +1,6 @@
 module.exports = function (sequelize, DataTypes) {
     var Todos = sequelize.define("todos", {
 
-        Todo_Type: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
         Todo_Name: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -28,7 +24,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         Todo_Location: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             validate: {
                 len: [1, 255]
             }
@@ -38,19 +34,15 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: 0,
             allowNull: false,
             validate: {
-                len: [1]
+                len: [1,20]
             }
+        },
+        User_Id: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     });
-
-    Todos.associate = function (models) {
-        Todos.belongsTo(models.users, {
-            foreignKey: {
-                allowNull: false
-            }
-        });
-    };
-
+    
     return Todos;
 
 };
