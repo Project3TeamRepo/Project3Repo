@@ -1,6 +1,4 @@
-
-    
-         <nav>
+<nav>
 <nav class="navbar navbar-expand-md navbar-dark">
 
             <a class="navbar-brand" href="calendar.html">Ultimate Organizer</a>
@@ -15,17 +13,17 @@
                       <a class="nav-link" href="calendar.html">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="login.html">Log In</a>
-                      <a class="nav-link" href="createaccount.html">Register</a>
+                      <a class="nav-link" href="">Log In</a>
+                      <a class="nav-link" href="">Register</a>
                     </li>
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Organize This!
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="calendar.html">Calendar</a>
-                        <a class="dropdown-item" href="todolist.html">To Do List</a>
-                        <a class="dropdown-item" href="grocery.html">Grocery List</a>
+                        <a class="dropdown-item" href="">Calendar</a>
+                        <a class="dropdown-item" href="">To Do List</a>
+                        <a class="dropdown-item" href="">Shopping List</a>
                         <div class="dropdown-divider"></div>
                         <!-- <a class="dropdown-item" href="#">Something else here</a> -->
                       </div>
@@ -38,16 +36,19 @@
                 </div>
               </nav>   
         </nav>
- <script src="js/modal.js"></script>
-
-<script src="js/modal.js"></script>
+<div>
+          <ul id="calendarUL" class="list-group">
+            {{#each calendars}}
+              {{> calendars/calendar-block }}
+            {{/each}}
+          </ul>
+</div>
         <!-- Footer -->
-        <footer class="footer">
+         <footer class="footer">
         <!-- Copyright -->
             <div class="footer-copyright text-center py-3">© 2018 Copyright
                 <a href="https://mdbootstrap.com/bootstrap-tutorial/"></a>
             </div>
-      
         </footer>
         <!-- Footer -->
 <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -55,6 +56,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
   crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/"></script>
+
 
    <div><a href="javascript:openmodal();">Add an Event</a></div>
    <div id="event_edit_container" class="eventCreator">
@@ -89,6 +91,7 @@
           <td style="text-align: left;"><input type="text" id="location" name="location"></td>
           </tr>
           </table>
+          <span onclick="newEvent()" class="addBtn" name="Save">Save</span>
       </form>
    </div>
   </div>

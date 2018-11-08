@@ -212,14 +212,6 @@ nav a {
 
 }
 
-#modalLogin{
-  position: absolute; top:2%; left:25%;
-  width: 30%;
-  margin: 15% auto;
- 
-  visibility: hidden;
-}
-
 #event_edit_container {
   visibility: hidden;
   background: coral;
@@ -241,6 +233,7 @@ nav a {
 button.ui-dialog-titlebar-close {
   color: coral;
 }
+
  #form {
   position: relative;
   padding: 45px; 
@@ -250,20 +243,8 @@ button.ui-dialog-titlebar-close {
   text-align: right;
 } */
 
-       
-
 .eventCreator {
   background: rgb(103,103,103,0.4);
   border: 1px solid #000;
 
-}
-
-#Login {
-  background-color: #f4f4f4;
-  margin: 20% auto;
-  padding: 20px;
-  box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2), 0 7px 20px 0 rgb(0,0,0.17); 
-  width: 30%;
-  margin: 15% auto;
-  position: absolute; top:2%; left:25%;
 }
