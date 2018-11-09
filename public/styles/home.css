@@ -1,3 +1,10 @@
+*{
+    padding: 0;
+    margin: 0;
+
+
+}
+
 #title {
 
     text-align:center;
@@ -5,11 +12,11 @@
 }
 
 .jumbotron {
-   
-    background-image: url('../images/family.png');
-    background-size: 17%;
+    padding: 145px;
+    background-image: url('../images/background-2462434_1920.jpg');
+    background-size: 100%;
     background-repeat: no-repeat;
-    padding: 50px;
+    text-align: center;
 
 
 }
@@ -18,10 +25,8 @@
     text-align: center;
 }
 
-#login {
-    align-content: center;
-}
+.header{
 
-#signup {
-    align-content: center;
+    background-image: url('../images/calendar-background.jpg');
+    background-size: 50%;
 }
