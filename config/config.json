@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "DokSql1793$",
+    "password": "bootcamp",
     "database": "main_db",
     "host": "localhost",
     "dialect": "mysql",

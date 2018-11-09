@@ -1,0 +1,32 @@
+*{
+    padding: 0;
+    margin: 0;
+
+
+}
+
+#title {
+
+    text-align:center;
+    
+}
+
+.jumbotron {
+    padding: 150px;
+    background-image: url('../images/background-2462434_1920.jpg');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    text-align: center;
+
+
+}
+
+#main-text {
+    text-align: center;
+}
+
+.header{
+
+    background-image: url('../images/calendar-background.jpg');
+    background-size: 50%;
+}
