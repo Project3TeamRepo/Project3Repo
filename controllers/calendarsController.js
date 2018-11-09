@@ -9,7 +9,23 @@ var db = require("../models");
 module.exports = function (app) {
   // Create all our routes and set up logic within those routes where required.
   app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, "../public/login.html"));
+    var hbsObject = [];
+    
+    db.calendars.findAll({User_Id : 1})
+      .then(function(result) { //console.log("todos = "); console.log(resultB);
+        hbsObject = { calendars: result };
+        res.render("calendar", hbsObject);
+    });
+  
+  });
+
+  app.get("/todos:user", function (req, res) {    
+    db.todos.findAll({User_Id : 1})
+      .then(function(result) { //console.log("todos = "); console.log(resultB);
+        var todoObject = { todos: result };
+        res.render("index", todoObject);
+    });
+  
   });
 
   app.get('/favicon.ico', function (req, res) {
@@ -27,34 +43,64 @@ module.exports = function (app) {
     res.redirect('/');
   });
 
-  app.get("/calendars", function (req, res) {
-    // db.calendars.findAll({})
-    // .then(function(result) {
-    //   var hbsObject = {
-    //     calendars: result
-    //   };
-    //   res.render("calendar", hbsObject);
-    //});
-    res.render("calendar", { user: req.user });
-  });
+  // app.get("/calendars", function (req, res) {
+  //   db.calendars.findAll({})
+  //   .then(function(result) {
+  //     var hbsObject = {
+  //       calendars: result
+  //     }; console.log("stop for hbsObject: "); console.log(hbsObject);
+  //     //res.render("calendar", hbsObject);
+  //   });
+  // });
 
-  app.get("/api/calendar", function (req, res) {
-    db.calendars.findAll({})
-      .then(function (result) {
-        res.json(result);
-      });
-  });
+  // app.get("/api/calendar", function (req, res) {
+  //   db.calendars.findAll({})
+  //     .then(function (result) {
+  //       res.json(result);
+  //     });
+  // });
 
   app.post("/api/calendars", function (req, res) {
-    //console.log(req.body);
+    console.log(req.body);
     db.calendars.create(
       {
-        eventTypeId: req.body.type,
         Event_Name: req.body.name,
         Start_Date: req.body.start_date,
         Event_Info: req.body.info,
         Location: req.body.location,
-        userId: req.body.userid
+        Event_Type: req.body.type,
+        User_Id: req.body.userid
+      })
+      .then(function (result) {
+        // Send back the ID of the new quote
+        res.json({ id: result.insertId });
+      });
+  });
+
+  app.post("/api/todos", function (req, res) {
+    console.log(req.body);
+    db.todos.create(
+      {
+        Todo_Name: req.body.name,
+        Todo_Date: req.body.date,
+        Todo_Info: req.body.info,
+        Todo_Location: req.body.location,
+        User_Id: req.body.userid
+      })
+      .then(function (result) {
+        // Send back the ID of the new quote
+        res.json({ id: result.insertId });
+      });
+  });
+
+  app.post("/api/shopping", function (req, res) {
+    console.log(req.body);
+    db.shopping_items.create(
+      {
+        List_Name: req.body.name,
+        List_Quantity: req.body.quantity,
+        List_Location: req.body.location,
+        User_Id: req.body.userid
       })
       .then(function (result) {
         // Send back the ID of the new quote
