@@ -1,7 +1,3 @@
-$(function () {
-    $("#datepicker").datepicker({ dateFormat: 'dd/mm/yy' });
-});
-
 function openmodal() {
     $("#event_edit_container").css('visibility', 'visible');
     var $dialogContent = $("#event_edit_container");
@@ -28,11 +24,11 @@ function openmodal() {
                     location: location,
                     userid: 1
                 };
-                //console.log(eventObject);
 
                 $.post("/api/calendars", eventObject, function (res) {
-                    $dialogContent.dialog("close");
-                    $("#event_edit_container").css('visibility', 'hidden');
+console.log("res came back as "); console.log(res); console.log("===========");
+                    // $dialogContent.dialog("close");
+                    // $("#event_edit_container").css('visibility', 'hidden');
                 });
 
             },

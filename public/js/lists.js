@@ -26,29 +26,42 @@ list.addEventListener('click', function(ev) {
   }
 }, false);
 
-// Create a new list item when clicking on the "Add" button
-function newElement() {
-  var li = document.createElement("li");
-  var inputValue = document.getElementById("myInput").value;
-  var t = document.createTextNode(inputValue);
-  li.appendChild(t);
-  if (inputValue === '') {
-    alert("You must write something!");
-  } else {
-    document.getElementById("myUL").appendChild(li);
-  }
-  document.getElementById("myInput").value = "";
+function newTodo () {
+  let name = $('#todoName').val();
+  let date = $('#todoDate').val();
+  let info = $('#todoInfo').val();
+  let location = $('#todoLocation').val();
 
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  li.appendChild(span);
+  var eventObject = {
+      name: name,
+      date: date,
+      info: info,
+      location: location,
+      userid: 1
+  };
 
-  for (i = 0; i < close.length; i++) {
-    close[i].onclick = function() {
-      var div = this.parentElement;
-      div.style.display = "none";
-    }
-  }
-}
+  $.post("/api/todos", eventObject, function (res) {
+      console.log("res came back as "); console.log(res); console.log("===========");
+      // $dialogContent.dialog("close");
+      // $("#event_edit_container").css('visibility', 'hidden');
+  });
+} 
+
+function newShopping () {
+  let name = $('#shoppingName').val();
+  let quantity = $('#shoppingQuantity').val();
+  let location = $('#shoppingLocation').val();
+
+  var eventObject = {
+      name: name,
+      quantity: quantity,
+      location: location,
+      userid: 1
+  };
+
+  $.post("/api/shopping", eventObject, function (res) {
+      console.log("res came back as "); console.log(res); console.log("===========");
+      // $dialogContent.dialog("close");
+      // $("#event_edit_container").css('visibility', 'hidden');
+  });
+} 
