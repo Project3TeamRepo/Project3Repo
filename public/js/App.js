@@ -12,7 +12,7 @@ class App extends React.Component {
           <div id="logo">
             <span className="icon">date_range</span>
             <span>
-              Ultimate<b>Organizer</b>
+              react<b>calendar</b>
             </span>
           </div>
         </header>
