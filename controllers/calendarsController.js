@@ -19,6 +19,10 @@ module.exports = function (app) {
   
   });
 
+  app.get('/reactCalendar', function (req, res) {
+    res.sendFile(path.join(__dirname, "../public/mikailaCalendar.html"));
+  });
+
   app.get("/todos:user", function (req, res) {    
     db.todos.findAll({User_Id : 1})
       .then(function(result) { //console.log("todos = "); console.log(resultB);
@@ -29,7 +33,7 @@ module.exports = function (app) {
   });
 
   app.get('/favicon.ico', function (req, res) {
-    res.sendFile(path.join(__dirname, "../public/images/favicon.ico"));;
+    res.sendFile(path.join(__dirname, "../public/images/favicon.ico"));
   });
 
   app.get('/login', function (req, res) {
