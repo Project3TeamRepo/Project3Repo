@@ -1,11 +1,14 @@
-//npx create-react-app my-app
-//cd my-app
+//npx create-react-app  reactcalendar
+//cd reactcalendar
+//npm start
+
+//npm install date-fns
 //npm start
 
 import React from "react";
 import dateFns from "date-fns";
 
-class Calendar extends React.Component {
+class ReactCalendar extends React.Component {
   state = {
     currentMonth: new Date(),
     selectedDate: new Date()
@@ -121,4 +124,4 @@ class Calendar extends React.Component {
   }
 }
 
-export default Calendar;
+export default ReactCalendar;
