@@ -26,7 +26,6 @@ function newEvent(e) {
 
     $.post("/api/calendars", eventObject, function (res) {
         console.log("res came back as "); console.log(res); console.log("===========");
-        // $dialogContent.dialog("close");
-        // $("#event_edit_container").css('visibility', 'hidden');
+        $("#event_edit_container").css('visibility', 'hidden');
     });
 }

@@ -27,6 +27,7 @@ list.addEventListener('click', function(ev) {
 }, false);
 
 function newTodo () {
+  let userid = 2; //$('#GLOBAL USERID');
   let name = $('#todoName').val();
   let date = $('#todoDate').val();
   let info = $('#todoInfo').val();
@@ -37,13 +38,15 @@ function newTodo () {
       date: date,
       info: info,
       location: location,
-      userid: 1
+      userid: userid
   };
 
   $.post("/api/todos", eventObject, function (res) {
-      console.log("res came back as "); console.log(res); console.log("===========");
-      // $dialogContent.dialog("close");
-      // $("#event_edit_container").css('visibility', 'hidden');
+      console.log("todo res came back as "); console.log(res); console.log("===========");
+      $("#todoName").val("");
+      $("#todoDate").val("");
+      $("#todoInfo").val("");
+      $("#todoLocation").val("");
   });
 } 
 

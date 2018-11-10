@@ -10,31 +10,56 @@ module.exports = function (app) {
   // Create all our routes and set up logic within those routes where required.
   app.get("/", function (req, res) {
     var hbsObject = [];
-    var condition = 2; //req.params.id;
+    var condition = req.params.id;
 
-    db.calendars.findAll({where:{For_Whom: condition}})
-        .then(function(resultC) { console.log(resultC);
+    db.calendars.findAll({where:{For_Whom: 1}})
+      .then(function(result) { //console.log(result);
+         hbsObject = { calendars: result }; console.log(hbsObject);
+         res.render("calendar", hbsObject);
+    });
+  
+  });
 
-        db.todos.findAll({where:{User_Id: condition}})
-        .then(function(resultT) { console.log(resultT);
-
-            db.shopping_items.findAll({where:{User_Id: condition}})
-            .then(function(resultS) { console.log(resultS);
-
-                res.render("index", {
-                  calendars: resultC,
-                  todos: resultT,
-                  shopping: resultS
-                });
-            });//end shopping.findAll which is innermost
-        });//end todos.findAll which is middle of nest
-    });//end then calendars.findAll which is outermost
+  app.get("/todos:user", function (req, res) {    
+    db.todos.findAll({where:{User_Id : 1}})
+      .then(function(result) {
+        var todoObject = { todos: result };
+        res.render("index", todoObject);
+    });
   
   });
 
   app.get('/favicon.ico', function (req, res) {
     res.sendFile(path.join(__dirname, "../public/images/favicon.ico"));
   });
+
+  app.get('/login', function (req, res) {
+    //i want to run the linkded in code here
+
+    //res.render('login', { user: req.user });
+  });
+
+  app.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/');
+  });
+
+  // app.get("/calendars", function (req, res) {
+  //   db.calendars.findAll({})
+  //   .then(function(result) {
+  //     var hbsObject = {
+  //       calendars: result
+  //     }; console.log("stop for hbsObject: "); console.log(hbsObject);
+  //     //res.render("calendar", hbsObject);
+  //   });
+  // });
+
+  // app.get("/api/calendar", function (req, res) {
+  //   db.calendars.findAll({})
+  //     .then(function (result) {
+  //       res.json(result);
+  //     });
+  // });
 
   app.post("/api/calendars", function (req, res) {
     console.log(req.body);
@@ -63,7 +88,7 @@ module.exports = function (app) {
         Todo_Location: req.body.location,
         User_Id: req.body.userid
       })
-      .then(function (result) {console.log("=====FINISHED==========="); console.log(res); console.log("============");
+      .then(function (result) {
         // Send back the ID of the new quote
         res.json({ id: result.insertId });
       });
