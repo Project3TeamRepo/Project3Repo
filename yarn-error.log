@@ -1,0 +1,97 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.10.1/libexec/bin/yarn.js run
+
+PATH: 
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+Yarn version: 
+  1.10.1
+
+Node version: 
+  8.11.3
+
+Platform: 
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/mikaelamckee/Documents/SMU/Homework/Project3Repo/package.json: Unexpected token < in JSON at position 0
+      at JSON.parse (<anonymous>)
+      at /usr/local/Cellar/yarn/1.10.1/libexec/lib/cli.js:1136:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/Cellar/yarn/1.10.1/libexec/lib/cli.js:98:30)
+      at /usr/local/Cellar/yarn/1.10.1/libexec/lib/cli.js:109:13
+      at <anonymous>
+
+npm manifest: 
+  <<<<<<< HEAD
+  {
+    "name": "Project2-Team-3",
+    "version": "1.0.0",
+    "description": "Project 2 Starter",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js",
+      "lint": "eslint **/*.js --quiet",
+      "fix": "eslint --fix .",
+      "test": "npm run lint && NODE_ENV=test mocha -u tdd --reporter spec --exit"
+    },
+    "license": "ISC",
+    "dependencies": {
+      "body-parser": "^1.18.3",
+      "dotenv": "^6.1.0",
+      "express": "^4.16.4",
+      "express-handlebars": "^3.0.0",
+      "handlebars": "^4.0.12",
+      "mysql": "^2.16.0",
+      "mysql2": "^1.5.3",
+      "sequelize": "^4.39.0"
+    },
+    "devDependencies": {
+      "chai": "^4.1.2",
+      "chai-http": "^4.0.0",
+      "eslint": "^4.19.1",
+      "eslint-config-prettier": "^2.9.0",
+      "eslint-plugin-prettier": "^2.6.2",
+      "mocha": "^5.2.0",
+      "prettier": "^1.13.7"
+    }
+  }
+  =======
+  {
+    "name": "Project2-Team-3",
+    "version": "1.0.0",
+    "description": "Project 2 Starter",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js",
+      "lint": "eslint **/*.js --quiet",
+      "fix": "eslint --fix .",
+      "test": "npm run lint && NODE_ENV=test mocha -u tdd --reporter spec --exit"
+    },
+    "license": "ISC",
+    "dependencies": {
+      "body-parser": "^1.18.3",
+      "dotenv": "^6.1.0",
+      "express": "^4.16.3",
+      "express-handlebars": "^3.0.0",
+      "mysql": "^2.16.0",
+      "mysql2": "^1.5.3",
+      "sequelize": "^4.39.0"
+    },
+    "devDependencies": {
+      "chai": "^4.1.2",
+      "chai-http": "^4.0.0",
+      "eslint": "^4.19.1",
+      "eslint-config-prettier": "^2.9.0",
+      "eslint-plugin-prettier": "^2.6.2",
+      "mocha": "^5.2.0",
+      "prettier": "^1.13.7"
+    }
+  }
+  >>>>>>> 97f8b638f6d7b82238b27daa9086b91979cad502
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
