@@ -30,3 +30,40 @@
     background-image: url('../images/calendar-background.jpg');
     background-size: 50%;
 }
+
+.footer-copyright {
+
+text-align: center;
+}
+
+.footer-copyright  {
+    display: flex;
+  padding: 400px;
+    flex-direction: column;
+
+}
+
+.page-footer {
+    flex: 1 0 auto;
+}
+
+.card-img-top {
+    border-radius: 50%;
+}
+
+.main3 {
+
+    text-align: left;
+    word-wrap: normal;
+}
+
+.icon {
+    background-image: url('../images/ultimate\ calendar.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 550px;
+    background-position: center;
+    
+    text-align: center;
+    
+}
