@@ -5,6 +5,20 @@
 
 }
 
+.wrapper {
+    background-image: url('../images/iphone-410311_1280.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 100%;
+}
+
+.btn-lg {
+    height: 500px;
+    width: 300px;
+    font-size: 50px;
+}
+
+
 #title {
 
     text-align:center;
@@ -12,7 +26,7 @@
 }
 
 .jumbotron {
-    padding: 150px;
+    padding: 200px;
     background-image: url('../images/background-2462434_1920.jpg');
     background-size: 100%;
     background-repeat: no-repeat;
@@ -57,13 +71,25 @@ text-align: center;
     word-wrap: normal;
 }
 
+.intro {
+
+}
+
+.title {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+text-align: center;
+
+
+}
+
 .icon {
-    background-image: url('../images/ultimate\ calendar.png');
+    background-image: url('../images/ultimate\ calendar2.png');
     background-repeat: no-repeat;
     width: 100%;
-    padding: 550px;
+    padding: 450px;
     background-position: center;
     
     text-align: center;
     
 }
+
