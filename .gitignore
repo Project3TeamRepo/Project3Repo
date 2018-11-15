@@ -5,6 +5,4 @@
 .DS_Store
 .env
 .env.default.txt
-/testprojecttwo
-public/images/organizerLogoSquare.png
-public/images/organizerLogoWide.png
+
