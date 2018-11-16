@@ -7,6 +7,8 @@
 
 import React from "react";
 import dateFns from "date-fns";
+import Button from '@material-ui/core/Button';
+// import Dialogue1 from 'components/Dialogue1';
 
 class ReactCalendar extends React.Component {
   state = {
@@ -119,9 +121,15 @@ class ReactCalendar extends React.Component {
         {this.renderHeader()}
         {this.renderDays()}
         {this.renderCells()}
+        <Button id="neweventbutton">Add New Event
+          {/* Dialogue1 ref={} /> */}
+        </Button>
+
       </div>
     );
   }
 }
+
+
 
 export default ReactCalendar;
