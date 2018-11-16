@@ -7,42 +7,42 @@ var db = require("../models");
 
 module.exports = function (app) {
   app.get("/", function (req, res) {
-    var condition = 2; //req.params.id;
+    res.sendFile(path.join(__dirname, "../public/home.html"));
+    // var condition = 2; //req.params.id;
+    // db.calendars.findAll({where:{For_Whom: condition}})
+    //     .then(function(resultC) {
+    //       for(let i=0; i<resultC.length; i++){
+    //         let typeId = resultC[i].Event_Type;
+    //         var typeText = "";
+    //         switch(typeId){
+    //           case 1: typeText = "(birthday)";
+    //           break;
+    //           case 2: typeText = "(appointment)";
+    //           break;
+    //           case 3: typeText = "(meeting)";
+    //           break;
+    //           case 4: typeText = "(social)";
+    //           break;
+    //           case 5: typeText = "(school work)";
+    //           break;
+    //           default: typeText = "(meeting)";
+    //           break;
+    //         }
+    //         resultC[i].Event_Type = typeText;
+    //       }
 
-    db.calendars.findAll({where:{For_Whom: condition}})
-        .then(function(resultC) {
-          for(let i=0; i<resultC.length; i++){
-            let typeId = resultC[i].Event_Type;
-            var typeText = "";
-            switch(typeId){
-              case 1: typeText = "(birthday)";
-              break;
-              case 2: typeText = "(appointment)";
-              break;
-              case 3: typeText = "(meeting)";
-              break;
-              case 4: typeText = "(social)";
-              break;
-              case 5: typeText = "(school work)";
-              break;
-              default: typeText = "(meeting)";
-              break;
-            }
-            resultC[i].Event_Type = typeText;
-          }
-
-          db.todos.findAll({where:{User_Id: condition}})
-          .then(function(resultT) {
-            db.shopping_items.findAll({where:{User_Id: condition}})
-            .then(function(resultS) {
-                res.render("index", {
-                  calendars: resultC,
-                  todos: resultT,
-                  shopping: resultS
-                });
-            });//end then of shopping.findAll which is innermost
-        });//end then of todos.findAll which is middle of nest
-    });//end then of calendars.findAll which is outermost
+    //       db.todos.findAll({where:{User_Id: condition}})
+    //       .then(function(resultT) {
+    //         db.shopping_items.findAll({where:{User_Id: condition}})
+    //         .then(function(resultS) {
+    //             res.render("index", {
+    //               calendars: resultC,
+    //               todos: resultT,
+    //               shopping: resultS
+    //             });
+    //         });//end then of shopping.findAll which is innermost
+    //     });//end then of todos.findAll which is middle of nest
+    // });//end then of calendars.findAll which is outermost
   
   });
 
