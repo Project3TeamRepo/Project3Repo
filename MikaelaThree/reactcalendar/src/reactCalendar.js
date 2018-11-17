@@ -8,12 +8,13 @@
 import React from "react";
 import dateFns from "date-fns";
 import Button from '@material-ui/core/Button';
-// import Dialogue1 from 'components/Dialogue1';
+import Dialogue1 from './components/Dialogue1';
 
 class ReactCalendar extends React.Component {
   state = {
     currentMonth: new Date(),
-    selectedDate: new Date()
+    selectedDate: new Date(),
+    showdialogue: false
   };
 
   renderHeader() {
@@ -46,6 +47,11 @@ class ReactCalendar extends React.Component {
       days.push(
         <div className="col col-center" key={i}>
           {dateFns.format(dateFns.addDays(startDate, i), dateFormat)}
+
+          {/* Determine the day */}
+          {/* Compare to what you receive from the database */}
+          {/* API Call from the database(lifecycle component) */}
+          {/* Also call the function when changing the month */}
         </div>
       );
     }
@@ -98,8 +104,10 @@ class ReactCalendar extends React.Component {
   }
 
   onDateClick = day => {
+    console.log('testing')
     this.setState({
-      selectedDate: day
+      selectedDate: day,
+    showdialogue:true
     });
   };
 
@@ -121,10 +129,9 @@ class ReactCalendar extends React.Component {
         {this.renderHeader()}
         {this.renderDays()}
         {this.renderCells()}
-        <Button id="neweventbutton">Add New Event
-          {/* Dialogue1 ref={} /> */}
-        </Button>
-
+        <Button id="neweventbutton" onClick={this.onDateClick} >Click Here ...</Button>
+      {this.state.showdialogue ? <Dialogue1/>:null}
+      
       </div>
     );
   }

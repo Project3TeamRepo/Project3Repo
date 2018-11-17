@@ -47,14 +47,17 @@ body {
     font-weight: 300;
     line-height: 1.5;
     color: var(--text-color);
-    background: var(--bg-color);
+    /* background: var(--bg-color); */
+    background-image: url("../src/calendarbackground.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
     position: relative;
 }
 
 header {
   display: block;
   width: 100%;
-  padding: 1.75em 0;
+  padding: 2.75em 0;
   border-bottom: 1px solid var(--border-color);
   /* background: var(--neutral-color); */
   background: #fb8c00;
@@ -124,6 +127,7 @@ main {
   position: relative;
   width: 100%;
   background: var(--neutral-color);
+  box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2), 0 7px 20px 0 rgb(0,0,0.17); 
   border: 1px solid var(--border-color);
 }
 
