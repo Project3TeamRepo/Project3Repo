@@ -3,6 +3,7 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
 
+
 .icon {
   font-family: 'Material Icons', serif;
   font-style: normal;
@@ -46,22 +47,27 @@ body {
     font-weight: 300;
     line-height: 1.5;
     color: var(--text-color);
-    background: var(--bg-color);
+    /* background: var(--bg-color); */
+    background-image: url("../src/calendarbackground.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
     position: relative;
 }
 
 header {
   display: block;
   width: 100%;
-  padding: 1.75em 0;
+  padding: 2.75em 0;
   border-bottom: 1px solid var(--border-color);
-  background: var(--neutral-color);
+  /* background: var(--neutral-color); */
+  background: #fb8c00;
 }
 
 header #logo {
   font-size: 175%;
   text-align: center;
-  color: var(--main-color);
+  /* color: var(--main-color); */
+  color: white;
   line-height: 1;
 }
 
@@ -121,6 +127,7 @@ main {
   position: relative;
   width: 100%;
   background: var(--neutral-color);
+  box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2), 0 7px 20px 0 rgb(0,0,0.17); 
   border: 1px solid var(--border-color);
 }
 
@@ -177,7 +184,8 @@ main {
 
 .calendar .body .selected {
   border-left: 10px solid transparent;
-  border-image: linear-gradient(45deg, #1a8fff 0%,#53cbf1 40%);
+  /* border-image: linear-gradient(45deg, #1a8fff 0%,#53cbf1 40%); */
+  border-image: linear-gradient(45deg, yellow 0%, #fb8c00 40%);
   border-image-slice: 1;
 }
 
@@ -210,7 +218,8 @@ main {
 .calendar .body .cell .bg {
   font-weight: 700;
   line-height: 1;
-  color: var(--main-color);
+  /* color: var(--main-color); */
+  color: orangered;
   opacity: 0;
   font-size: 8em;
   position: absolute;
@@ -229,4 +238,48 @@ main {
   flex-grow: 0;
   flex-basis: calc(100%/7);
   width: calc(100%/7);
+}
+
+#neweventbutton {
+  color:  #fb8c00;
+  padding-top: 23px;
+}
+
+/* Dialogue Box */
+
+.MuiButton-label-2 {
+  color:  #fb8c00;
+}
+
+/* .MuiTypography-title-330 {
+  background-image: linear-gradient(45deg, yellow 0%, #fb8c00 40%);
+  width: 100%;
+  padding: 30px;
+  text-align: center;
+  color: white;
+} */
+
+#form-dialogue-title.MuiDialogTitle-root-323 {
+  background-image: linear-gradient(45deg, yellow 0%, #fb8c00 40%);
+  width: 100%;
+  padding: 30px;
+  text-align: center;
+  color: white;
+} 
+
+h2.MuiTypography-title-88 {
+  /* color: #fb8c00; */
+  background-image: linear-gradient(45deg, yellow 0%, #fb8c00 40%);
+  width: 100%;
+  padding: 30px;
+  text-align: center;
+  color: white;
+}  
+
+#starttime {
+  padding-top: 21px;
+}
+
+#endtime {
+  padding-top: 21px;
 }
