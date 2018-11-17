@@ -25,6 +25,9 @@ Personal calendar, to-do list and shopping list
 - Express JS
 - Node JS
 - AJAX calls
+- Bootstrap
+- React JS
+- Materialize CSS
 - jQuery
 - HTML/CSS
 
