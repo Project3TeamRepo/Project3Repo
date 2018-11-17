@@ -93,3 +93,16 @@ text-align: center;
     
 }
 
+.padding {
+    padding: 80px 0;
+}
+
+#plx {
+    background: url('../images/apple-pc.jpg');
+    background-repeat: no-repeat;
+    align-content: center;
+    display: table;
+    height: 60%;
+    width: 100%;
+    background-size: cover;
+}
