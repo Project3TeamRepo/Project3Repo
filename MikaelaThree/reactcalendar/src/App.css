@@ -244,3 +244,42 @@ main {
   color:  #fb8c00;
   padding-top: 23px;
 }
+
+/* Dialogue Box */
+
+.MuiButton-label-2 {
+  color:  #fb8c00;
+}
+
+/* .MuiTypography-title-330 {
+  background-image: linear-gradient(45deg, yellow 0%, #fb8c00 40%);
+  width: 100%;
+  padding: 30px;
+  text-align: center;
+  color: white;
+} */
+
+#form-dialogue-title.MuiDialogTitle-root-323 {
+  background-image: linear-gradient(45deg, yellow 0%, #fb8c00 40%);
+  width: 100%;
+  padding: 30px;
+  text-align: center;
+  color: white;
+} 
+
+h2.MuiTypography-title-88 {
+  /* color: #fb8c00; */
+  background-image: linear-gradient(45deg, yellow 0%, #fb8c00 40%);
+  width: 100%;
+  padding: 30px;
+  text-align: center;
+  color: white;
+}  
+
+#starttime {
+  padding-top: 21px;
+}
+
+#endtime {
+  padding-top: 21px;
+}

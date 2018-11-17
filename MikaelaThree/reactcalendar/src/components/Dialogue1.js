@@ -32,11 +32,12 @@ export default class FormDialog extends React.Component {
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">New (Insert Icon)</DialogTitle>
+          <DialogTitle id="form-dialog-title">New Event <span className="icon">date_range</span></DialogTitle>
           <DialogContent>
             <DialogContentText>
               Add Your New Event Here to Keep Your Family and Friends Connected with All of Your Plans! 
             </DialogContentText>
+
             <TextField
               autoFocus
               margin="dense"
