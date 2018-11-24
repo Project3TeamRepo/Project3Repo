@@ -4,6 +4,32 @@
 
 
 }
+.material-icons {
+    font-family: 'Material Icons', serif;
+    font-style: normal;
+    display: inline-block;
+    text-align: center;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+   
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+   }
+
+  .material-icons.md-24 {
+    font-size: 24px;
+    text-align: center;
+    color: white;
+    line-height: 3;
+   }
+   
+  
 
 .wrapper {
     background-image: url('../images/iphone-410311_1280.jpg');
