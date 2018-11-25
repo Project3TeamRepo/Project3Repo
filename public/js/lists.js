@@ -1,70 +1,133 @@
-var myNodelist = document.getElementsByTagName("LI");
-var i;
-for (i = 0; i < myNodelist.length; i++) {
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  myNodelist[i].appendChild(span);
-}
+$(document).ready(function(){
 
-// Click on a close button to hide the current list item
-var close = document.getElementsByClassName("close");
-var i;
-for (i = 0; i < close.length; i++) {
-  close[i].onclick = function() {
-    var div = this.parentElement;
-    div.style.display = "none";
+  function doneTodo(e) { 
+    event.preventDefault();
+    let url = "/todos/" + e;
+    $.post(url,  function (res) {
+      window.location.reload();
+    });//end function doneTodo
   }
-}
 
-// Add a "checked" symbol when clicking on a list item
-var list = document.querySelector('ul');
-list.addEventListener('click', function(ev) {
-  if (ev.target.tagName === 'LI') {
-    ev.target.classList.toggle('checked');
-  }
-}, false);
+  function doneShopping(e) { 
+    event.preventDefault();
+    let url = "/shopping/" + e;
+    $.post(url,  function (res) {
+      window.location.reload();  
+    });
+  }//end function doneShopping
 
-function newTodo () {
-  let userid = 2; //$('#GLOBAL USERID');
-  let name = $('#todoName').val();
-  let date = $('#todoDate').val();
-  let info = $('#todoInfo').val();
-  let location = $('#todoLocation').val();
+  // function calendarDetail(e) {
+  //   event.preventDefault();
+  //   var url = "/calendars/2"; //get id from event
+  //   $.get(url, function (result) {
+  //     console.log(result);
+  //   });
+  // }//end function calendarDetail
 
-  var eventObject = {
+  $(function () {
+    $(".T").on("click", function () {
+      event.preventDefault();
+      let todoId = this.attributes[0].value;
+      doneTodo(todoId);
+    });
+  });//end listen to class T
+
+  $(function () {
+    $(".S").on("click", function () {
+      event.preventDefault();
+      let shoppingId = this.attributes[0].value;
+      doneShopping(shoppingId);
+    });
+  });//end listen to class S
+
+  // $(function () {
+  //   $(".C").on("click", function () {
+  //     event.preventDefault();
+  //     let calendarId = this.attributes[0].value;
+  //     calendarDetail(calendarId);
+  //   });
+  // });//end listen to class C
+
+  var calendarButton = document.getElementById('calendarButton');
+  calendarButton.addEventListener('click', newCalendar, false);
+
+  function newCalendar() {
+    event.preventDefault();
+    let date = $('#calendarDate').val()
+    let type = $('#calendarType').val()
+    let name = $('#calendarName').val()
+    let info = $('#calendarInfo').val()
+    let where = $('#calendarLocation').val()
+
+    let eventObject = {
+      type: type,
       name: name,
       date: date,
       info: info,
-      location: location,
-      userid: userid
-  };
+      where: where,
+      userid: 2 //global user id
+    };
 
-  $.post("/api/todos", eventObject, function (res) {
-      console.log("todo res came back as "); console.log(res); console.log("===========");
+    $.post("/api/calendars", eventObject, function (res) {
+      window.location.reload();
+    });
+  }//end function newCalendar
+
+  var todoButton = document.getElementById('todoButton');
+  todoButton.addEventListener('click', newTodo, false);
+
+  function newTodo() {
+    event.preventDefault();
+    let userid = 2; //$('#GLOBAL USERID');
+    let name = $('#todoName').val();
+    let date = $('#todoDate').val();
+    let info = $('#todoInfo').val();
+    let where = $('#todoLocation').val();
+
+    var eventObject = {
+      name: name,
+      date: date,
+      info: info,
+      where: where,
+      userid: userid
+    };
+
+    $.post("/api/todos", eventObject, function (req, res) {
       $("#todoName").val("");
       $("#todoDate").val("");
       $("#todoInfo").val("");
       $("#todoLocation").val("");
-  });
-} 
+    })
+      .then(function () {
+        window.location.reload();
+      });
+  }//end function newTodo
 
-function newShopping () {
-  let name = $('#shoppingName').val();
-  let quantity = $('#shoppingQuantity').val();
-  let location = $('#shoppingLocation').val();
+  var shoppingButton = document.getElementById('shoppingButton');
+  shoppingButton.addEventListener('click', newShopping, false);
 
-  var eventObject = {
+  function newShopping() {
+    event.preventDefault();
+    let userid = 2; //$('#GLOBAL USERID');
+    let name = $('#shoppingName').val();
+    let quantity = $('#shoppingQuantity').val();
+    let where = $('#shoppingLocation').val();
+
+    var eventObject = {
       name: name,
       quantity: quantity,
-      location: location,
-      userid: 1
-  };
+      where: where,
+      userid: userid
+    };
 
-  $.post("/api/shopping", eventObject, function (res) {
-      console.log("res came back as "); console.log(res); console.log("===========");
-      // $dialogContent.dialog("close");
-      // $("#event_edit_container").css('visibility', 'hidden');
-  });
-} 
+    $.post("/api/shopping", eventObject, function (res) {
+      $("#shoppingName").val("");
+      $("#shoppingQuantity").val("");
+      $("#shoppingLocation").val("");
+    })
+      .then(function () {
+        window.location.reload();
+      });
+  }//end function newShopping
+
+});//end document ready
