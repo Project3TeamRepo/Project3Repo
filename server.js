@@ -2,6 +2,7 @@ require("dotenv").config();
 var express = require("express");
 var bodyParser = require("body-parser");
 var exphbs = require("express-handlebars");
+const passport = require('passport');
 
 var db = require("./models");
 
@@ -34,7 +35,7 @@ app.set("view engine", "handlebars");
 // Routes
 require('./controllers/calendarsController.js')(app);
 require('./controllers/home.js')(app);
-require('./controllers/chat.js')(app);
+require('./controllers/chat.js')(app, passport);
 
 var syncOptions = { force: false };
 

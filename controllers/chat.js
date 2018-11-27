@@ -1,4 +1,4 @@
-module.exports = function(app) {
+module.exports = function(app, passport) {
 
     const chatService = require('../services/chatService.js');
 
