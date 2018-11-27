@@ -1,5 +1,5 @@
 {
-  "name": "Ultimate Organizer",
+  "name": "ultimate-organizer",
   "version": "1.0.0",
   "description": "Personal organizer for individuals or families",
   "main": "server.js",
@@ -15,8 +15,13 @@
     "dotenv": "^6.1.0",
     "express": "^4.16.3",
     "express-handlebars": "^3.0.0",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.4.0",
     "mysql": "^2.16.0",
     "mysql2": "^1.5.3",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "sequelize": "^4.39.0"
   },
   "devDependencies": {
