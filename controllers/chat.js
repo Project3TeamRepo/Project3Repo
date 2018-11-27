@@ -97,6 +97,7 @@ module.exports = function(app) {
     //          UserId: Member creating a chat room (session).
     //          Chat room name: Name for the chat room (Body's name attribute)
     //          Chat room description (optional): Description for the chat room (Body's description attribute)
+    //          Chat room members (optional): List of user ids that will be part of this chat room (Body's members attribute)
     // Returns:
     //          A reference to the newly created chat room (in Location header) and empty body.
     //
@@ -112,7 +113,7 @@ module.exports = function(app) {
         getUserId(req).then(
             userId => {
                 if(req.params && isNonEmptyString(req.body.name)) {
-                    chatService.createChatRoom(userId, req.body.name, req.body.description).then(
+                    chatService.createChatRoom(userId, req.body.name, req.body.description, req.body.members).then(
                         chatRoom => {
                             res.status(201)
                                .setHeader('Content-Type', 'application/json')

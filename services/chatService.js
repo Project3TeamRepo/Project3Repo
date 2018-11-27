@@ -48,7 +48,7 @@ module.exports = function() {
         );
     }
 
-    function createChatRoom(userId, name, description) {
+    function createChatRoom(userId, name, description, members) {
         findMember(userId).then(
             member => {
                 ChatRooms.findOrCreate({where: {chat_room_name: name}, defaults: {chat_room_name: name, chat_room_description: description, creator: member}}, 
@@ -62,7 +62,18 @@ module.exports = function() {
                         if(created) {
                             Promise.all([member.addChatroom(chatRoom), chatRoom.addMember(member)]).then(
                                 results => {
-                                    return new Promise((resolve, reject) => resolve(chatRoom.chat_room_id));
+                                    if(members) {
+                                        updateChatRoomMembers(userId, chatRoom.chat_room_id, members).then(
+                                            () => {
+                                                return new Promise((resolve, reject) => resolve(chatRoom.chat_room_id))
+                                            },
+                                            error => {
+                                                return new Promise((resolve, reject) => resolve(chatRoom.chat_room_id))
+                                            }
+                                        );
+                                    } else {
+                                        return new Promise((resolve, reject) => resolve(chatRoom.chat_room_id));
+                                    }
                                 },
                                 error => {
                                     return new Promise((resolve, reject) => reject(error));
