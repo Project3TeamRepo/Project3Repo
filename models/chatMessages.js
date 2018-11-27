@@ -1,9 +1,6 @@
 module.exports =  function(sequelize, DataTypes){
 
-    const Members = require ('./members.js')(sequelize, DataTypes);
-    const ChatRooms = require ('./chatroom.js')(sequelize, DataTypes);
-
-    var ChatMessage = sequelize.define("chat_messages", {
+    const ChatMessage = sequelize.define("chat_messages", {
         message_id: {
             type: DataTypes.INTEGER, 
             autoIncrement: true,
@@ -26,9 +23,6 @@ module.exports =  function(sequelize, DataTypes){
             unique: false
         }
     });
-
-    ChatMessage.hasOne(Members, {as: "author"});
-    ChatMessage.hasOne(ChatRooms, {as: "audience"});
 
     return ChatMessage;
 }

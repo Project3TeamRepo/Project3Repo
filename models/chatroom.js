@@ -1,9 +1,6 @@
 module.exports =  function(sequelize, DataTypes){
 
-    const Members = require ('./members.js')(sequelize, DataTypes);
-    const Messages = require ('./chatMessages.js')(sequelize, DataTypes);
-
-    var ChatRooms = sequelize.define("chatrooms", {
+    const ChatRooms = sequelize.define("chatrooms", {
         chat_room_id: {
             type: DataTypes.INTEGER, 
             autoIncrement: true,
@@ -30,11 +27,6 @@ module.exports =  function(sequelize, DataTypes){
             }
         }
     });
-
-    ChatRooms.hasOne(Member, {as: "chat_room_creator"});
-    ChatRooms.belongToMany(Members, {through: "chatroom_members", as: "members"});
-    ChatRooms.hasMany(Messages, {as: "messages"});
-    Members.belongToMany(ChatRooms, {through: "chatroom_members", as: "chatrooms"});
 
     return ChatRooms;
 }

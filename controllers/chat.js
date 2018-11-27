@@ -1,165 +1,435 @@
-module.exports = function(app, sequelize, DataTypes) {
+module.exports = function(app) {
 
-    const ChatRooms = require ('../models/chatroom.js')(sequelize, DataTypes);
-    const Members = require('../models/members.js')(sequelize, DataTypes);    
-    const Messages = require('../models/chatMessages.js')(sequelize, DataTypes);    
+    const chatService = require('../services/chatService.js');
 
-    // Get the list of available members
+    // Gets User ID from session.
+    //
+    // getUserId :: Request -> Promise[Integer, String] 
+    function getUserId(req) {
+        return new Promise((resolve, reject) => {
+            if(req && req.user) {
+                resolve(req.user);
+            } else {
+                reject("User not logged in");
+            }
+        });
+    }
+
+    // Checks if a provided value is a String and it's not empty.
+    //
+    // isNonEmptyString :: Any -> Boolean 
+    function isNonEmptyString(value) {
+        return (typeof value === 'string' || value instanceof String) && value !== "";
+    }
+
+    // GET /members
+    // ------------
+    //
+    // Expects no input params
+    // Returns:
+    //          MIME-Type: Application/JSON
+    //          JSON Structure: { members: [{user_id, User_Name}], error: String}
+    //
+    //          200 -> Member List found
+    //          500 -> Error while retrieving Member List
+    //
     app.get("/members", function(req, res) {
-        Members.all().then(members => {
-                            let result;
-                            if(!members) {
-                                result = "{members: []}";
-                            } else {
-                                result = "{members: " + JSON.stringify(members) + "}";
-                            }
-                            res.status(200).send(result);
-                        }).catch(error => {
-                            console.error("Error requesting members: " + error);
-                            res.status(500).send('{error: "' + JSON.stringify(error) + '"}');
-                        });
+        chatService.listAllMembers().then(
+            members => {
+                res.status(200)
+                   .setHeader('Content-Type', 'application/json')
+                   .json({members: members});
+            },
+            error => {
+                console.error("Error requesting member list: " + JSON.stringify(error));
+                res.status(500)
+                   .setHeader('Content-Type', 'application/json')
+                   .json({error: "Could not retrieve member list"});
+            }
+        );
     });
 
-  // Get the list of available chat rooms
-  app.get("/chats", function(req, res) {
-    ChatRooms.all().then(chatRooms => {
-                        let result;
-                        if(!chatRooms) {
-                            result = "{chatRooms: []}";
-                        } else {
-                            result = "{chatRooms: " + JSON.stringify(chatRooms) + "}";
+    // GET /chats
+    // ------------
+    //
+    // Input params:
+    //          UserId: Member requesting the list of chat rooms (session).
+    // Returns:
+    //          The list of all chat rooms associated to the logged in member.
+    //
+    //          MIME-Type: Application/JSON
+    //          JSON Structure: { chatRooms: [{chat_room_id, chat_room_name, chat_room_description}], error: String}
+    //
+    //          200 -> Member List found
+    //          401 -> Member not logged in
+    //          500 -> Error while retrieving Member List
+    //
+    app.get("/chats", function(req, res) {
+        getUserId(req).then(
+            userId => {
+                chatService.listAllChatRooms(userId).then(
+                    chatRooms => {
+                        res.status(200)
+                           .setHeader('Content-Type', 'application/json')
+                           .json({chatRooms: chatRooms});
+                    },
+                    error => {
+                        console.error("Could not retrieve the list of chat rooms: " + JSON.stringify(error));
+                        res.status(500)
+                           .setHeader('Content-Type', 'application/json')
+                           .json({error: "Could not retrieve the list of chat rooms available"});
+                    }
+                );
+            },
+            error => {
+                console.log("User not found in session: " + error);
+                res.status(401)
+                   .setHeader('Content-Type', 'application/json')
+                   .json({error: "User not found in session"});
+            }
+        );
+    });
+
+    // POST /chats
+    // ------------
+    //
+    // Input params:
+    //          UserId: Member creating a chat room (session).
+    //          Chat room name: Name for the chat room (Body's name attribute)
+    //          Chat room description (optional): Description for the chat room (Body's description attribute)
+    // Returns:
+    //          A reference to the newly created chat room (in Location header) and empty body.
+    //
+    //          MIME-Type: Application/JSON
+    //          JSON Structure: {error: String, fields: [String]}
+    //
+    //          201 -> Chat room created (Link in 'Location' header)
+    //          400 -> Bad Request parameter (input values failed validation). Fields listed in 'fields' element.
+    //          401 -> Member not logged in
+    //          500 -> Error while retrieving Member List
+    //
+    app.post("/chats", function(req, res) {
+        getUserId(req).then(
+            userId => {
+                if(req.params && isNonEmptyString(req.body.name)) {
+                    chatService.createChatRoom(userId, req.body.name, req.body.description).then(
+                        chatRoom => {
+                            res.status(201)
+                               .setHeader('Content-Type', 'application/json')
+                               .setHeader('Location', '/chats/' + chatRoom + '/')
+                               .json({});                    
+                        },
+                        error => {
+                            console.log("Error while creating chat room: " + JSON.stringify(error));
+                            res.status(500)
+                               .setHeader('Content-Type', 'application/json')
+                               .json({error: "Unable to create chat room"});
                         }
-                        res.status(200).send(result);
-                   }).catch(error => {
-                        console.error("Error requesting chat rooms: " + error);
-                        res.status(500).send('{error: ' + JSON.stringify(error) + '}');
-                   });
+                    );
+                } else {
+                    console.log("No name provided in request");
+                    res.status(400)
+                       .setHeader('Content-Type', 'application/json')
+                       .json({error: "No name provided", fields: ['name']});
+                }
+            },
+            error => {
+                console.log("User not found in session: " + error);
+                res.status(401)
+                   .setHeader('Content-Type', 'application/json')
+                   .json({error: "User not found in session"});
+            }
+        );
     });
 
-  // Create a new chat room
-  app.post("/chats", function(req, res) {
-    // creator, name, description
-    if(req.body) {
-        let creator = req.body.creator;
-        let name = req.body.name;
-        let description = req.body.description;
-        if(creator && name) {
-            Members.findById(creator).then(member => {
-                                        if(member) {
-                                            let chatRoom = ChatRooms.build({chat_room_name: name, chat_room_description: description, chat_room_creator: member});
-                                            chatRoom.save().then(room => {
-                                                            member.addChatrooms(room);
-                                                            member.save();
-                                                            room.addMembers(member);
-                                                            room.save();
-                                                            res.status(201)
-                                                               .set('Location', '/chats/' + room.chat_room_id + "/")
-                                                               .send('{}');
-                                                           })
-                                                           .catch(error => {
-                                                            res.status(500)
-                                                               .send('{error: ' + JSON.stringify(error) + '}');
-                                                           });
-                                        } else {
-                                            res.status(400)
-                                               .send('{error: "Invalid member reference"}');
-                                        }
-                                     })
-                                     .catch(error => {
-                                        res.status(400)
-                                           .send('{error: "Invalid member reference"}');
-                                     });
-        } else {
-            res.status(400)
-               .send('{error: "Invalid request: Both a name and a creator are needed"}');
-        }
-    } else {
-        res.status(400)
-           .send('{error: "Invalid request: Both a name and a creator are needed"}');
-    }
-  });
+    // Close an existing chat room
+    //
+    // DELETE /chats/:chatRoom
+    // -----------------------
+    //
+    // Input params:
+    //          UserId: Member creating a chat room (session).
+    //          chatRoom: Chat room identifier (path variable)
+    // Returns:
+    //          Empty response if deletion is successful.
+    //
+    //          MIME-Type: Application/JSON
+    //          JSON Structure: {error: String, fields: [String]}
+    //
+    //          200 -> Chat room deleted
+    //          400 -> Bad Request parameter (input values failed validation). Fields listed in 'fields' element.
+    //          401 -> Member not logged in
+    //          500 -> Error while trying to delete the chat room
+    //
+    app.delete("/chats/:chatRoom", function(req, res) {
+        getUserId(req).then(
+            userId => {
+                if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
+                    chatService.closeChatRoom(userId, req.params.chatRoom).then(
+                        () => {
+                            res.status(200)
+                               .setHeader('Content-Type', 'application/json')
+                               .json({});                    
+                        },
+                        error => {
+                            console.log("Error while creating chat room: " + JSON.stringify(error));
+                            res.status(500)
+                               .setHeader('Content-Type', 'application/json')
+                               .json({error: "Unable to create chat room"});
+                        }
+                    );
+                } else {
+                    console.log("No chat room provided in request");
+                    res.status(400)
+                       .setHeader('Content-Type', 'application/json')
+                       .json({error: "Invalid chat room provided", fields: ['chatRoom']});
+                }            
+            },
+            error => {
+                console.log("User not found in session: " + error);
+                res.status(401)
+                   .setHeader('Content-Type', 'application/json')
+                   .json({error: "User not found in session"});
+            }
+        );
+    });
 
-  // Close an existing chat room
-  app.delete("/chats/:chatRoom", function(req, res) {
-    if(req.params.chatRoom && req.body) {
-        let requestorId = req.body.memberId;
-        let chatRoomId = req.params.chatRoom;
-        if(requestorId) {
-            ChatRooms.findById(chatRoomId).then(chatRoom => {
-                                            if(chatRoom.chat_room_creator.member_id === requestorId) {
-                                                chatRoom.members.forEach(member => {
-                                                    member.setChatRooms(member.getChatRooms().filter(cr => cr.chat_room_id !== chatRoomId)).save();
-                                                });
-                                                chatRoom.destroy().then(() => {
-                                                                    res.status(200).send('{}');
-                                                                  }).catch(error => {
-                                                                    res.status(500)
-                                                                       .send('{error: ' + JSON.stringify(error) + ' }');
-                                                                  });
-                                            } else {
-                                                res.status(401).send('{error: "Current user is not the chat room creator"}');
-                                            }
-                                          }).catch(error => {
-                                            res.status(500).send('{error: "Could not find chat room: ' + JSON.stringify(error) + '"}');
-                                          });
-        } else {
-            res.status(400)
-               .send('{error: "Invalid request: Chat room identifier and owner are needed"}');
-         }
-    } else {
-        res.status(400)
-           .send('{error: "Invalid request: Chat room identifier and owner are needed"}');
-    }
-  });
+    
+    // Get chat room information
+    //
+    // GET /chats/:chatRoom
+    // --------------------
+    //
+    // Input params:
+    //          UserId: Member creating a chat room (session).
+    //          chatRoom: Chat room identifier (path variable)
+    //          
+    // Returns:
+    //          Chat room information.
+    //
+    //          MIME-Type: Application/JSON
+    //          JSON Structure: {error: String, fields: [String]}
+    //
+    //          200 -> List of Chat Room messages
+    //          400 -> Bad Request parameter (input values failed validation). Fields listed in 'fields' element.
+    //          401 -> Member not logged in
+    //          500 -> Error while trying to retrieve messages from chat room
+    //
+    app.get("/chats/:chatRoom", function(req, res) {
+        getUserId(req).then(
+            userId => {
+                if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
+                    chatService.getChatRoomInformation(userId, req.params.chatRoom).then(
+                        chatRoomInfo => {
+                            res.status(200)
+                               .setHeader('Content-Type', 'application/json')
+                               .json(chatRoomInfo);                    
+                        },
+                        error => {
+                            console.log("Error while retrieving messages from chat room: " + JSON.stringify(error));
+                            res.status(500)
+                               .setHeader('Content-Type', 'application/json')
+                               .json({error: "Unable to retrieve messages from chat room"});
+                            }
+                    );
+                } else {
+                    console.log("No chat room provided in request");
+                    res.status(400)
+                       .setHeader('Content-Type', 'application/json')
+                       .json({error: "Invalid chat room provided", fields: ['chatRoom']});
+                }            
+            },
+            error => {
+                console.log("User not found in session: " + error);
+                res.status(401)
+                   .setHeader('Content-Type', 'application/json')
+                   .json({error: "User not found in session"});
+            }
+        );
+    });
 
-  // Get all messages from an especific chat room
-  app.get("/chats/:chatRoom", function(req, res) {
-    if(req.params.chatRoom) {
-        ChatRooms.findById(req.params.chatRoom).then(chatRoom => {
-                                                res.status(200).send('{messages: ' + JSON.stringify(chatRoom.getMessages()) + '}');
-                                               }).catch(error => {
-                                                res.status(500).send('{error: ' + JSON.stringify(error) + '}');
-                                               });
-    } else {
-        res.status(400)
-           .send('{error: "Invalid request: Chat room identifier is needed"}');
-    }
-  });
+    // Get all messages from an especific chat room
+    //
+    // GET /chats/:chatRoom/messages
+    // -----------------------------
+    //
+    // Input params:
+    //          UserId: Member creating a chat room (session).
+    //          chatRoom: Chat room identifier (path variable)
+    //          messages: Last number of messages to return (request parameter). Integer (optional).
+    //          
+    // Returns:
+    //          List of messages posted in the chat room.
+    //
+    //          MIME-Type: Application/JSON
+    //          JSON Structure: {error: String, fields: [String]}
+    //
+    //          200 -> List of Chat Room messages
+    //          400 -> Bad Request parameter (input values failed validation). Fields listed in 'fields' element.
+    //          401 -> Member not logged in
+    //          500 -> Error while trying to retrieve messages from chat room
+    //
+    app.get("/chats/:chatRoom/messages", function(req, res) {
+        getUserId(req).then(
+            userId => {
+                if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
+                    let messageCount = undefined;
+                    if(req.query && req.query.messages && !isNaN(req.query.messages) && req.query.messages > 0) {
+                        messageCount = req.query.messages;
+                    } 
+                    chatService.getMessages(userId, req.params.chatRoom, messageCount).then(
+                        messages => {
+                            res.status(200)
+                               .setHeader('Content-Type', 'application/json')
+                               .json({messages: messages});                    
+                        },
+                        error => {
+                            console.log("Error while retrieving messages from chat room: " + JSON.stringify(error));
+                            res.status(500)
+                               .setHeader('Content-Type', 'application/json')
+                               .json({error: "Unable to retrieve messages from chat room"});
+                            }
+                    );
+                } else {
+                    console.log("No chat room provided in request");
+                    res.status(400)
+                       .setHeader('Content-Type', 'application/json')
+                       .json({error: "Invalid chat room provided", fields: ['chatRoom']});
+                }            
+            },
+            error => {
+                console.log("User not found in session: " + error);
+                res.status(401)
+                   .setHeader('Content-Type', 'application/json')
+                   .json({error: "User not found in session"});
+            }
+        );
+    });
 
-  // Send a message to an especific chat room
-  app.post("/chats/:chatRoom", function(req, res) {
-    if(req.params.chatRoom && req.body && req.body.memberId && req.body.messageText) {
-        ChatRooms.findById(req.params.chatRoom).then(chatRoom => {
-                                                if(chatRoom.getMembers().filter(m => m.member_id === req.body.memberId).length === 1) {
-                                                    Members.findById(req.body.memberId).then(member => {
-                                                                                        let currentDateTime = new Date();
-                                                                                        let message = Messages.build({message_text: req.body.messageText, message_time_stamp: currentDateTime});
-                                                                                        message.save().then(savedMessage => {
-                                                                                                        message.setAuthor(member);
-                                                                                                        message.setAudience(chatRoom);
-                                                                                                        message.save();
-                                                                                                        chatRoom.addMessages(message);
-                                                                                                        chatRoom.save();
-                                                                                                      }).catch(error => {
-                                                                                                        res.status(500)
-                                                                                                           .send('{error: "Could not post message: ' + JSON.stringify(error) + '"}');
-                                                                                                      });
-                                                                                       }).catch(error => {
-                                                                                        res.status(400)
-                                                                                           .send('{error: "Invalid member"}');
-                                                                                       });
-                                                } else {
-                                                    res.status(401)
-                                                       .send('{error: "Member cannot post to provided chatroom"}');
-                                                }
-                                               }).catch(error => {
-                                                res.status(500)
-                                                   .send('{error: "Could not find chat room: ' + JSON.stringify(error) + '"}');
-                                               });
-    } else {
-        res.status(400)
-           .send('{error: "Missing chat room, author or message"}');
-    }
-  });
+    // Send a message to an especific chat room
+    //
+    // POST /chats/:chatRoom/messages
+    // ------------------------------
+    //
+    // Input params:
+    //          UserId: Member creating a chat room (session).
+    //          chatRoom: Chat room identifier (path variable)
+    //          messageText: Message to send (body attribute).
+    //          
+    // Returns:
+    //          Empty response if successful.
+    //
+    //          MIME-Type: Application/JSON
+    //          JSON Structure: {error: String, fields: [String]}
+    //
+    //          200 -> Message posted
+    //          400 -> Bad Request parameter (input values failed validation). Fields listed in 'fields' element.
+    //          401 -> Member not logged in
+    //          500 -> Error while trying to post messages to chat room
+    //
+    app.post("/chats/:chatRoom/messages", function(req, res) {
+        getUserId(req).then(
+            userId => {
+                if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
+                    if(req.body && isNonEmptyString(req.body.messageText)) {
+                        chatService.postMessageInRoom(userId, req.params.chatRoom, req.body.messageText).then(
+                            () => {
+                                res.status(200)
+                                .setHeader('Content-Type', 'application/json')
+                                .json({});                     
+                            },
+                            error => {
+                                console.log("Error while posting message in chat room: " + JSON.stringify(error));
+                                res.status(500)
+                                   .setHeader('Content-Type', 'application/json')
+                                   .json({error: "Unable to post message in chat room"});
+                            }
+                        );
+                    }
+                    else {
+                        console.log("No message text provided in request");
+                        res.status(400)
+                           .setHeader('Content-Type', 'application/json')
+                           .json({error: "Invalid message text provided", fields: ['messageText']});    
+                    }
+                } 
+                else {
+                    console.log("No chat room provided in request");
+                    res.status(400)
+                       .setHeader('Content-Type', 'application/json')
+                       .json({error: "Invalid chat room provided", fields: ['chatRoom']});
+                }
+            },
+            error => {
+                console.log("User not found in session: " + error);
+                res.status(401)
+                   .setHeader('Content-Type', 'application/json')
+                   .json({error: "User not found in session"});
+            }
+        );
+    });
+
+    // Update chat room members
+    //
+    // PUT /chats/:chatRoom
+    // --------------------
+    //
+    // Input params:
+    //          UserId: Member creating a chat room (session).
+    //          chatRoom: Chat room identifier (path variable)
+    //          members: Array of members for the group (body attribute).
+    //          
+    // Returns:
+    //          Empty response if successful.
+    //
+    //          MIME-Type: Application/JSON
+    //          JSON Structure: {error: String, fields: [String]}
+    //
+    //          200 -> Message posted
+    //          400 -> Bad Request parameter (input values failed validation). Fields listed in 'fields' element.
+    //          401 -> Member not logged in
+    //          500 -> Error while trying to post messages to chat room
+    //
+    app.put("/chats/:chatRoom", function(req, res) {
+        getUserId(req).then(
+            userId => {
+                if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
+                    if(req.body && req.body.members) {
+                        chatService.updateChatRoomMembers(userId, req.params.chatRoom, req.body.members).then(
+                            () => {
+                                res.status(200)
+                                .setHeader('Content-Type', 'application/json')
+                                .json({});                     
+                            },
+                            error => {
+                                console.log("Error while updating chat room member list: " + JSON.stringify(error));
+                                res.status(500)
+                                   .setHeader('Content-Type', 'application/json')
+                                   .json({error: "Unable to post message in chat room"});
+                            }
+                        );
+                    }
+                    else {
+                        console.log("No members provided in request");
+                        res.status(400)
+                           .setHeader('Content-Type', 'application/json')
+                           .json({error: "Invalid member list provided", fields: ['members']});    
+                    }
+                } 
+                else {
+                    console.log("No chat room provided in request");
+                    res.status(400)
+                       .setHeader('Content-Type', 'application/json')
+                       .json({error: "Invalid chat room provided", fields: ['chatRoom']});
+                }
+            },
+            error => {
+                console.log("User not found in session: " + error);
+                res.status(401)
+                   .setHeader('Content-Type', 'application/json')
+                   .json({error: "User not found in session"});
+            }
+        );
+    });
 
 };

@@ -1,5 +1,12 @@
 module.exports = function (sequelize, DataTypes) {
   var Users = sequelize.define("users", {
+    user_id: {
+      type: DataTypes.INTEGER, 
+      autoIncrement: true,
+      allowNull: false,
+      unique: true,
+      primaryKey: true
+    },
     User_Name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -10,8 +17,11 @@ module.exports = function (sequelize, DataTypes) {
     Email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
-        len: [1, 60]
+        isEmail: true,
+        notEmpty: true,
+        len: [3, 255]
       }
     },
     Cell_Phone: {
