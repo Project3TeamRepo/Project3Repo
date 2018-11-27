@@ -17,6 +17,7 @@ Personal calendar, to-do list and shopping list
 - mySQL database managed by Serielize
 - Firebase Account Registration widget
 - Passport.js User Authentication
+- JSON Web Tokens (JWT)
 - AJAX calls, Express routing
 
 # Technologies Used
