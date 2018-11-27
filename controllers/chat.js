@@ -7,8 +7,8 @@ module.exports = function(app) {
     // getUserId :: Request -> Promise[Integer, String] 
     function getUserId(req) {
         return new Promise((resolve, reject) => {
-            if(req && req.user) {
-                resolve(req.user);
+            if(req && req.user && req.user.userId) {
+                resolve(req.user.userId);
             } else {
                 reject("User not logged in");
             }
@@ -33,7 +33,7 @@ module.exports = function(app) {
     //          200 -> Member List found
     //          500 -> Error while retrieving Member List
     //
-    app.get("/members", function(req, res) {
+    app.get("/members", passport.authenticate('jwt', {session: false}), function(req, res) {
         chatService.listAllMembers().then(
             members => {
                 res.status(200)
@@ -64,7 +64,7 @@ module.exports = function(app) {
     //          401 -> Member not logged in
     //          500 -> Error while retrieving Member List
     //
-    app.get("/chats", function(req, res) {
+    app.get("/chats", passport.authenticate('jwt', {session: false}), function(req, res) {
         getUserId(req).then(
             userId => {
                 chatService.listAllChatRooms(userId).then(
@@ -109,7 +109,7 @@ module.exports = function(app) {
     //          401 -> Member not logged in
     //          500 -> Error while retrieving Member List
     //
-    app.post("/chats", function(req, res) {
+    app.post("/chats", passport.authenticate('jwt', {session: false}), function(req, res) {
         getUserId(req).then(
             userId => {
                 if(req.params && isNonEmptyString(req.body.name)) {
@@ -162,7 +162,7 @@ module.exports = function(app) {
     //          401 -> Member not logged in
     //          500 -> Error while trying to delete the chat room
     //
-    app.delete("/chats/:chatRoom", function(req, res) {
+    app.delete("/chats/:chatRoom", passport.authenticate('jwt', {session: false}), function(req, res) {
         getUserId(req).then(
             userId => {
                 if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
@@ -216,7 +216,7 @@ module.exports = function(app) {
     //          401 -> Member not logged in
     //          500 -> Error while trying to retrieve messages from chat room
     //
-    app.get("/chats/:chatRoom", function(req, res) {
+    app.get("/chats/:chatRoom", passport.authenticate('jwt', {session: false}), function(req, res) {
         getUserId(req).then(
             userId => {
                 if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
@@ -270,7 +270,7 @@ module.exports = function(app) {
     //          401 -> Member not logged in
     //          500 -> Error while trying to retrieve messages from chat room
     //
-    app.get("/chats/:chatRoom/messages", function(req, res) {
+    app.get("/chats/:chatRoom/messages", passport.authenticate('jwt', {session: false}), function(req, res) {
         getUserId(req).then(
             userId => {
                 if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
@@ -328,7 +328,7 @@ module.exports = function(app) {
     //          401 -> Member not logged in
     //          500 -> Error while trying to post messages to chat room
     //
-    app.post("/chats/:chatRoom/messages", function(req, res) {
+    app.post("/chats/:chatRoom/messages", passport.authenticate('jwt', {session: false}), function(req, res) {
         getUserId(req).then(
             userId => {
                 if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
@@ -391,7 +391,7 @@ module.exports = function(app) {
     //          401 -> Member not logged in
     //          500 -> Error while trying to post messages to chat room
     //
-    app.put("/chats/:chatRoom", function(req, res) {
+    app.put("/chats/:chatRoom", passport.authenticate('jwt', {session: false}), function(req, res) {
         getUserId(req).then(
             userId => {
                 if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {

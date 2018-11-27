@@ -33,6 +33,8 @@ app.set("view engine", "handlebars");
 
 // Routes
 require('./controllers/calendarsController.js')(app);
+require('./controllers/home.js')(app);
+require('./controllers/chat.js')(app);
 
 var syncOptions = { force: false };
 
@@ -54,7 +56,3 @@ db.sequelize.sync(syncOptions).then(function () {
 });
 
 module.exports = app;
-
-require('./controllers/session.js')(app);
-require('./controllers/home.js')(app);
-require('./controllers/chat.js')(app);

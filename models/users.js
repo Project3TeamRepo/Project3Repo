@@ -31,6 +31,13 @@ module.exports = function (sequelize, DataTypes) {
         len: [1, 14]
       }
     },
+    Password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1, 40]
+      }
+    },
     Active: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
