@@ -6,11 +6,9 @@ If you answered yes to even one question above, then this app may be perfect for
 The Ultimate organizer will help you organize your familiy's To Do Lists, Chores, Errands, Shopping Lists, plus more. 
 
 
-![image](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3famiyfunctions.PNG)
-
-
-
 ## This is Google calendar on steroids. 
+
+![image](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3famiyfunctions.PNG)
 
 
 Keep your family organized and in sync with one simple calendar app. Keep reading to see how it works. 
