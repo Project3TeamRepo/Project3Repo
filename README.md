@@ -1,10 +1,17 @@
 # The Ultimate Organizer
-Do you find yourself with too much to do and not enough time to do it? Do you often feel like it's just impossible to stay organized, keep your living space semi-clean, AND keep a social life?
+#### Do you find yourself with too much to do and not enough time to do it? Do you often feel like it's just impossible to stay organized, keep your living space semi-clean, AND keep a social life?
 
 If you answered yes to even one question above, then this app may be perfect for you.  Introducing, The Ultimate Organizer app. 
-![imag](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/familycommandcenter.PNG)
+![imag](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3jumbotron.PNG)
 
 The Ultimate organizer will help you organize your families To Do Lists, Chores, Errands, Shopping Lists, plus more. 
+
+This is Google calendar on steroids. 
+
+![image](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3famiyfunctions.PNG)
+
+Keep your family organized and in sync with one simple calendar app. Keep reading to see how it works. 
+
 
 ## Getting Started
 
