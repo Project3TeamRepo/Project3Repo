@@ -1,5 +1,5 @@
 # The Ultimate Organizer
-#### Do you find yourself with too much to do and not enough time to do it? Do you often feel like it's just impossible to stay organized, keep your living space semi-clean, AND keep a social life?
+Do you find yourself with too much to do and not enough time to do it? Do you often feel like it's just impossible to stay organized, keep your living space semi-clean, AND keep a social life?
 
 If you answered yes to even one question above, then this app may be perfect for you.  Introducing, The Ultimate Organizer app. 
 ![imag](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3jumbotron.PNG)
