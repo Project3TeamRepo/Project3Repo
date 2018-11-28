@@ -287,5 +287,6 @@ h2.MuiTypography-title-88 {
 footer {
   position: fixed;
   bottom: 0;
+  top: 3;
   width: 100%;
 }
