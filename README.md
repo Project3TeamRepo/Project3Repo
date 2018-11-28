@@ -1,6 +1,22 @@
-##Ultimate Organizer
-Personal calendar, to-do list and shopping list
+# The Ultimate Organizer
+Do you find yourself with too much to do and not enough time to do it? Do you often feel like it's just impossible to stay organized, keep your living space semi-clean, AND keep a social life?
+
+If you answered yes to even one question above, then this app may be perfect for you.  Introducing, The Ultimate Organizer app. 
 ![imag](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/familycommandcenter.PNG)
+
+The Ultimate organizer will help you organize your families To Do Lists, Chores, Errands, Shopping Lists, plus more. 
+
+## Getting Started
+
+To get started, simply create an account. Don't worry about having to memorize yet another password. We've created this app to integrate seamlessly with your Google profile. 
+
+[photo of login]
+
+Once you've logged in, you'll be brought to your very own calendar where you can start adding tasks. 
+
+[photo]
+
+
 
 # Live Link
 (click image)<br>
@@ -8,27 +24,41 @@ Personal calendar, to-do list and shopping list
     <img src="organizerLogoWide.png">
 </a>
 
-#GITS
+# GITS
 <a href="https://github.com/Project-Team4/Project2-Team-3.git">-github</a>
 <a href="https://git.heroku.com/testprojecttwo.git">-heroku</a>
 
-# Requirements
-- Node js app using an Express-Handlebars server
-- mySQL database managed by Serielize
-- Firebase Account Registration widget
-- Passport.js User Authentication
-- AJAX calls, Express routing
 
 # Technologies Used
-- mySQL
-- Handlebars
-- Express JS
-- Node JS
-- AJAX calls
-- Bootstrap
-- React JS
-- Materialize CSS
-- jQuery
-- HTML/CSS
+* mySQL
+* Sequelize
+* Handlebars
+* Express JS
+* Node JS
+* Heroku
+* AJAX calls
+* Bootstrap
+* Google OAuth
+* React JS
+* Materialize CSS
+* jQuery
+* HTML/CSS
 
-No one maintains it at present
+# The Team
+* Donna Okrongly
+* Mikaela McIntosh
+* Belen Fernandez
+* Shay Banks
+
+
+
+
+# Live Link
+
+Get started by clicking the link below. 
+(click image)<br>
+<a href="https://testprojecttwo.herokuapp.com/">
+    <img src="organizerLogoWide.png">
+</a>
+
+
