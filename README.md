@@ -3,17 +3,18 @@ Do you find yourself with too much to do and not enough time to do it? Do you of
 
 If you answered yes to even one question above, then this app may be perfect for you.  Introducing, The Ultimate Organizer app. 
 
-The Ultimate organizer will help you organize your families To Do Lists, Chores, Errands, Shopping Lists, plus more. 
+The Ultimate organizer will help you organize your familiy's To Do Lists, Chores, Errands, Shopping Lists, plus more. 
+
 
 ![image](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3famiyfunctions.PNG)
 
 
-This is Google calendar on steroids. 
+
+## This is Google calendar on steroids. 
 
 
 Keep your family organized and in sync with one simple calendar app. Keep reading to see how it works. 
 
-![imag](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3jumbotron.PNG)
 
 # Getting Started
 
