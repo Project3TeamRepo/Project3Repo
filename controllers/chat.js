@@ -34,16 +34,16 @@ module.exports = function(app, passport) {
     //          500 -> Error while retrieving Member List
     //
     app.get("/members", passport.authenticate('jwt', {session: false}), function(req, res) {
+        console.log( Object.getOwnPropertyNames(chatService.listAllMembers));
         chatService.listAllMembers().then(
             members => {
+                console.log("About to respond with members");
                 res.status(200)
-                   .setHeader('Content-Type', 'application/json')
                    .json({members: members});
-            },
+            }).catch(
             error => {
                 console.error("Error requesting member list: " + JSON.stringify(error));
                 res.status(500)
-                   .setHeader('Content-Type', 'application/json')
                    .json({error: "Could not retrieve member list"});
             }
         );
@@ -67,24 +67,21 @@ module.exports = function(app, passport) {
     app.get("/chats", passport.authenticate('jwt', {session: false}), function(req, res) {
         getUserId(req).then(
             userId => {
-                chatService.listAllChatRooms(userId).then(
+                return chatService.listAllChatRooms(userId).then(
                     chatRooms => {
                         res.status(200)
-                           .setHeader('Content-Type', 'application/json')
                            .json({chatRooms: chatRooms});
-                    },
+                    }).catch(
                     error => {
                         console.error("Could not retrieve the list of chat rooms: " + JSON.stringify(error));
                         res.status(500)
-                           .setHeader('Content-Type', 'application/json')
                            .json({error: "Could not retrieve the list of chat rooms available"});
                     }
                 );
-            },
+            }).catch(
             error => {
                 console.log("User not found in session: " + error);
                 res.status(401)
-                   .setHeader('Content-Type', 'application/json')
                    .json({error: "User not found in session"});
             }
         );
@@ -113,31 +110,27 @@ module.exports = function(app, passport) {
         getUserId(req).then(
             userId => {
                 if(req.params && isNonEmptyString(req.body.name)) {
-                    chatService.createChatRoom(userId, req.body.name, req.body.description, req.body.members).then(
+                    return chatService.createChatRoom(userId, req.body.name, req.body.description, req.body.members).then(
                         chatRoom => {
+                            res.setHeader('Location', '/chats/' + chatRoom + '/');
                             res.status(201)
-                               .setHeader('Content-Type', 'application/json')
-                               .setHeader('Location', '/chats/' + chatRoom + '/')
                                .json({});                    
-                        },
+                        }).catch(
                         error => {
                             console.log("Error while creating chat room: " + JSON.stringify(error));
                             res.status(500)
-                               .setHeader('Content-Type', 'application/json')
                                .json({error: "Unable to create chat room"});
                         }
                     );
                 } else {
                     console.log("No name provided in request");
                     res.status(400)
-                       .setHeader('Content-Type', 'application/json')
                        .json({error: "No name provided", fields: ['name']});
                 }
-            },
+            }).catch(
             error => {
                 console.log("User not found in session: " + error);
                 res.status(401)
-                   .setHeader('Content-Type', 'application/json')
                    .json({error: "User not found in session"});
             }
         );
@@ -166,30 +159,26 @@ module.exports = function(app, passport) {
         getUserId(req).then(
             userId => {
                 if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
-                    chatService.closeChatRoom(userId, req.params.chatRoom).then(
+                    return chatService.closeChatRoom(userId, req.params.chatRoom).then(
                         () => {
                             res.status(200)
-                               .setHeader('Content-Type', 'application/json')
                                .json({});                    
-                        },
+                        }).catch(
                         error => {
                             console.log("Error while creating chat room: " + JSON.stringify(error));
                             res.status(500)
-                               .setHeader('Content-Type', 'application/json')
                                .json({error: "Unable to create chat room"});
                         }
                     );
                 } else {
                     console.log("No chat room provided in request");
                     res.status(400)
-                       .setHeader('Content-Type', 'application/json')
                        .json({error: "Invalid chat room provided", fields: ['chatRoom']});
                 }            
-            },
+            }).catch(
             error => {
                 console.log("User not found in session: " + error);
                 res.status(401)
-                   .setHeader('Content-Type', 'application/json')
                    .json({error: "User not found in session"});
             }
         );
@@ -220,30 +209,26 @@ module.exports = function(app, passport) {
         getUserId(req).then(
             userId => {
                 if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
-                    chatService.getChatRoomInformation(userId, req.params.chatRoom).then(
+                    return chatService.getChatRoomInformation(userId, req.params.chatRoom).then(
                         chatRoomInfo => {
                             res.status(200)
-                               .setHeader('Content-Type', 'application/json')
                                .json(chatRoomInfo);                    
-                        },
+                        }).catch(
                         error => {
                             console.log("Error while retrieving messages from chat room: " + JSON.stringify(error));
                             res.status(500)
-                               .setHeader('Content-Type', 'application/json')
                                .json({error: "Unable to retrieve messages from chat room"});
                             }
                     );
                 } else {
                     console.log("No chat room provided in request");
                     res.status(400)
-                       .setHeader('Content-Type', 'application/json')
                        .json({error: "Invalid chat room provided", fields: ['chatRoom']});
                 }            
-            },
+            }).catch(
             error => {
                 console.log("User not found in session: " + error);
                 res.status(401)
-                   .setHeader('Content-Type', 'application/json')
                    .json({error: "User not found in session"});
             }
         );
@@ -278,30 +263,26 @@ module.exports = function(app, passport) {
                     if(req.query && req.query.messages && !isNaN(req.query.messages) && req.query.messages > 0) {
                         messageCount = req.query.messages;
                     } 
-                    chatService.getMessages(userId, req.params.chatRoom, messageCount).then(
+                    return chatService.getMessages(userId, req.params.chatRoom, messageCount).then(
                         messages => {
                             res.status(200)
-                               .setHeader('Content-Type', 'application/json')
                                .json({messages: messages});                    
-                        },
+                        }).catch(
                         error => {
                             console.log("Error while retrieving messages from chat room: " + JSON.stringify(error));
                             res.status(500)
-                               .setHeader('Content-Type', 'application/json')
                                .json({error: "Unable to retrieve messages from chat room"});
                             }
                     );
                 } else {
                     console.log("No chat room provided in request");
                     res.status(400)
-                       .setHeader('Content-Type', 'application/json')
                        .json({error: "Invalid chat room provided", fields: ['chatRoom']});
                 }            
-            },
+            }).catch(
             error => {
                 console.log("User not found in session: " + error);
                 res.status(401)
-                   .setHeader('Content-Type', 'application/json')
                    .json({error: "User not found in session"});
             }
         );
@@ -333,16 +314,14 @@ module.exports = function(app, passport) {
             userId => {
                 if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
                     if(req.body && isNonEmptyString(req.body.messageText)) {
-                        chatService.postMessageInRoom(userId, req.params.chatRoom, req.body.messageText).then(
+                        return chatService.postMessageInRoom(userId, req.params.chatRoom, req.body.messageText).then(
                             () => {
                                 res.status(200)
-                                .setHeader('Content-Type', 'application/json')
                                 .json({});                     
-                            },
+                            }).catch(
                             error => {
                                 console.log("Error while posting message in chat room: " + JSON.stringify(error));
                                 res.status(500)
-                                   .setHeader('Content-Type', 'application/json')
                                    .json({error: "Unable to post message in chat room"});
                             }
                         );
@@ -350,21 +329,18 @@ module.exports = function(app, passport) {
                     else {
                         console.log("No message text provided in request");
                         res.status(400)
-                           .setHeader('Content-Type', 'application/json')
                            .json({error: "Invalid message text provided", fields: ['messageText']});    
                     }
                 } 
                 else {
                     console.log("No chat room provided in request");
                     res.status(400)
-                       .setHeader('Content-Type', 'application/json')
                        .json({error: "Invalid chat room provided", fields: ['chatRoom']});
                 }
-            },
+            }).catch(
             error => {
                 console.log("User not found in session: " + error);
                 res.status(401)
-                   .setHeader('Content-Type', 'application/json')
                    .json({error: "User not found in session"});
             }
         );
@@ -396,16 +372,14 @@ module.exports = function(app, passport) {
             userId => {
                 if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
                     if(req.body && req.body.members) {
-                        chatService.updateChatRoomMembers(userId, req.params.chatRoom, req.body.members).then(
+                        return chatService.updateChatRoomMembers(userId, req.params.chatRoom, req.body.members).then(
                             () => {
                                 res.status(200)
-                                .setHeader('Content-Type', 'application/json')
                                 .json({});                     
-                            },
+                            }).catch(
                             error => {
                                 console.log("Error while updating chat room member list: " + JSON.stringify(error));
                                 res.status(500)
-                                   .setHeader('Content-Type', 'application/json')
                                    .json({error: "Unable to post message in chat room"});
                             }
                         );
@@ -413,21 +387,18 @@ module.exports = function(app, passport) {
                     else {
                         console.log("No members provided in request");
                         res.status(400)
-                           .setHeader('Content-Type', 'application/json')
                            .json({error: "Invalid member list provided", fields: ['members']});    
                     }
                 } 
                 else {
                     console.log("No chat room provided in request");
                     res.status(400)
-                       .setHeader('Content-Type', 'application/json')
                        .json({error: "Invalid chat room provided", fields: ['chatRoom']});
                 }
-            },
+            }).catch(
             error => {
                 console.log("User not found in session: " + error);
                 res.status(401)
-                   .setHeader('Content-Type', 'application/json')
                    .json({error: "User not found in session"});
             }
         );

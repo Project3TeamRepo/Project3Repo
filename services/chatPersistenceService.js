@@ -1,16 +1,13 @@
-module.exports = function() {
+var db = require("../models");
 
-    var db = require("../models");
+const ChatRooms = db.chatrooms;
+const Users = db.users;    
+const Messages = db.chat_messages; 
 
-    const ChatRooms = db.chatrooms;
-    const Users = db.users;    
-    const Messages = db.chat_messages; 
-    
-    const ChatModel = {
-        chatRooms: ChatRooms,
-        members: Users,
-        messages: Messages
-    };
-
-    return ChatModel;
+let ChatModel = {
+    chatRooms: ChatRooms,
+    members: Users,
+    messages: Messages
 };
+
+module.exports = ChatModel;

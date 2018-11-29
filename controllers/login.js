@@ -1,4 +1,4 @@
-module.exports = function(app) {
+module.exports = function(app, passport) {
 
     const fs   = require('fs');
     const jwt  = require('jsonwebtoken');
@@ -6,15 +6,15 @@ module.exports = function(app) {
     const LocalStrategy = require('passport-local').Strategy;
     const passportJWT = require('passport-jwt');
     const JWTStrategy = passportJWT.Strategy;
+    const JWTExtractor = passportJWT.ExtractJwt;
 
-    var privateKEY  = fs.readFileSync('../config/keys/private.key', 'utf8');
-    var publicKEY  = fs.readFileSync('../config/keys/public.key', 'utf8');
+    const privateKEY  = fs.readFileSync('./config/keys/private.key', 'utf8');
 
     var db = require("../models");
 
     passport.use(new LocalStrategy({
-        usernameField: email,
-        passwordField: password,
+        usernameField: 'email',
+        passwordField: 'password',
       }, async (email, password, done) => {
         try {
             db.users.findOne({where: {Email: email, Password: password}, raw: true}).then(
@@ -31,17 +31,26 @@ module.exports = function(app) {
                 } 
             );
         } catch (error) {
-          done(error);
+            done(error);
         }
       }));
 
+      const cookieExtractor = function(req) {
+          var token = null;
+          if (req && req.cookies)
+          {
+            token = req.cookies['session'];
+          }
+          return token;
+    };
+
     passport.use(new JWTStrategy({
-        jwtFromRequest: req => req.cookies.session,
+        jwtFromRequest: JWTExtractor.fromExtractors([cookieExtractor, JWTExtractor.fromAuthHeaderAsBearerToken()]),
         secretOrKey: privateKEY,
       },
       (jwtPayload, done) => {
         if (jwtPayload.expires > Date.now()) {
-          return done('jwt expired');
+            return done('jwt expired');
         }
         return done(null, jwtPayload);
       }
@@ -57,6 +66,7 @@ module.exports = function(app) {
     //         500 => Server error 
     //
     app.post('/register', function(req, res) {
+        console.log("Attempting to register");
         const { name, email, cellphone, password } = req.body;
 
         db.users.findOne({where: {Email: email}, raw: true}).then(
@@ -98,11 +108,10 @@ module.exports = function(app) {
     app.post('/login', function(req, res) {
         passport.authenticate(
           'local',
-          { session: false },
+          { failureRedirect: '/login', session: false },
           (error, user) => {
-      
             if (error || !user) {
-              res.status(401)
+                res.status(401)
                  .json({ error: "Invalid Email or password" });
             }
       
@@ -117,14 +126,13 @@ module.exports = function(app) {
                 res.status(400)
                    .send({ error });
               }
-      
-              const token = jwt.sign(JSON.stringify(payload), keys.secret);
+              const token = jwt.sign(JSON.stringify(payload), privateKEY);
       
               res.cookie('session', token, { httpOnly: true, secure: true });
               res.redirect("/");
             });
           },
-        );
+        )(req, res);
     });
 
 };
