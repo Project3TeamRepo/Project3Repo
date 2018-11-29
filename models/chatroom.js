@@ -26,6 +26,19 @@ module.exports =  function(sequelize, DataTypes){
                 notEmpty: false
             }
         }
+    },
+    {
+        timestamps: true,
+        underscored: true,
+        freezeTableName:true,
+        tableName:'chatrooms',
+        classMethods:{
+          associate:function(db){
+            ChatRooms.belongsTo(db.users, {as: "creator", onDelete: 'cascade'});
+            ChatRooms.belongsToMany(db.users, {through: "chatroom_members", onDelete: 'cascade', as: { singular: 'member', plural: 'members' }});
+            ChatRooms.hasMany(db.chat_messages, {as: { singular: 'message', plural: 'messages' }, onDelete: 'cascade'});        
+          }
+        }
     });
 
     return ChatRooms;

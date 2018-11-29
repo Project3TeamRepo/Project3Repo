@@ -22,6 +22,17 @@ module.exports =  function(sequelize, DataTypes){
             allowNull: false,
             unique: false
         }
+    },
+    {
+        timestamps: true,
+        underscored: true,
+        freezeTableName:true,
+        tableName:'chat_messages',
+        classMethods:{
+          associate:function(db){
+            ChatMessage.belongsTo(db.users, {as: "author", onDelete: 'cascade'});
+          }
+        }
     });
 
     return ChatMessage;

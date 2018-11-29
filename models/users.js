@@ -42,6 +42,17 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     }
+  },
+  {
+      timestamps: true,
+      underscored: true,
+      freezeTableName:true,
+      tableName:'users',
+      classMethods:{
+        associate:function(db){
+          Users.belongsToMany(db.chatrooms, {through: "chatroom_members", onDelete: 'cascade', as: { singular: 'chatroom', plural: 'chatrooms' }});
+        }
+      }
   });
 
   return Users;

@@ -31,8 +31,8 @@ fs.readdirSync(__dirname)
   });
 
 Object.keys(db).forEach(function(modelName) {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
+  if (db[modelName] && db[modelName].options && db[modelName].options.classMethods && db[modelName].options.classMethods.associate ) {
+    db[modelName].options.classMethods.associate(db);
   }
 });
 
