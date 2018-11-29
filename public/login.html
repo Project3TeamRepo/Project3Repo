@@ -4,26 +4,40 @@
     <meta charset="utf-8" />
     <title>Log In</title>
 
-    <link rel="stylesheet" href="styles/login.css">
+<link rel="stylesheet" href="styles/login.css">
 
-    <!--Bootstrap-->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-  crossorigin="anonymous">
+<!--Bootstrap-->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+crossorigin="anonymous">
 
 <!--JQuery-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!-- Materialize-->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
+  <!-- Materialize-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript for Materialize -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <!--Font Awesome-->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+    crossorigin="anonymous">
+
+  <!--Material.io-->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700;">
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
 </head>
 <body>
 
         <nav>
                 <div class="nav-wrapper #fb8c00 orange darken-1">
-                  <ul id="nav-mobile" class="right hide-on-med-and-down">
-              
+                    <a class="brand-logo"><i class="material-icons">
+                        date_range</i>
+                      Ultimate<strong>Organizer</strong> </a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
                   </ul>
                 </div>
               </nav>
@@ -47,7 +61,7 @@
                     <br>
                   <p style="font-size:15px">Don't have an account?</p>
                   <div style="padding-top:8px id="login-button">
-                  <button id="submit" type="submit" class="btn btn-primary" onclick="redirectToCreateAccount(event);">Create Account</button>
+                  <button id="create_account" type="submit" class="btn btn-primary" onclick="redirectToCreateAccount(event);">Create Account</button>
                   </div>
                   </div>
                 </form>
