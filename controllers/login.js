@@ -130,13 +130,19 @@ module.exports = function(app, passport) {
                   }
                   const token = jwt.sign(JSON.stringify(payload), privateKEY);
           
-                  res.cookie('session', token, { httpOnly: true, secure: true });
+                  res.cookie('session', token, { httpOnly: false, secure: true });
                   res.status(200)
-                     .json({});
+                     .json({token: token});
                 });    
             }
           },
         )(req, res);
+    });
+
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.clearCookie('session');
+        res.redirect('/');
     });
 
 };

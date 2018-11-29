@@ -47,13 +47,20 @@
                     <br>
                   <p style="font-size:15px">Don't have an account?</p>
                   <div style="padding-top:8px id="login-button">
-                  <button id="submit" type="submit" class="btn btn-primary">Create Account</button>
+                  <button id="submit" type="submit" class="btn btn-primary" onclick="redirectToCreateAccount(event);">Create Account</button>
                   </div>
                   </div>
                 </form>
               </div>
 </body>
 <script>
+
+  function redirectToCreateAccount(ev) {
+    ev.preventDefault();
+    window.location.replace("/create_account.html");
+    return false;
+  }
+
   function submitForm(ev) {
     ev.preventDefault();
     const formElement = $("#account-form");
@@ -66,6 +73,7 @@
     });
 
     request.done(function(response) {
+      document.cookie="session=" + response.token;
       window.location.replace("/");
     });
 
