@@ -11,16 +11,28 @@ body{
     text-align:center;
 }
 
+.container {
+    padding: 50px;
+}
+
+p {
+    text-align: center;
+}
+
+label {
+    color: white;
+}
+
 #accountform {
-    width: 600px;
+    width: 400px;
+    height: 440px;
     margin-left: auto;
     margin-right: auto;
-    padding: 7px;
-    background-color: rgb(56, 56, 77);
-    opacity: 0.9;
-    border-radius: 10px;
+    padding: 15px;
+    background-color: #03A596;
+    opacity: 0.7;
+    border-radius: 3px;
     color: white;
-    font-family: 'Dancing Script', cursive;
     font-size: 22px;
 }
 
@@ -28,57 +40,12 @@ body{
     margin-left: auto;
     margin-right: auto;
     display: block;
-    background-color: rgb(73, 10, 10);
+    background-color: #f0412c;
+    width: 200px;
 }
 
-.home-page-btns {
-    text-align: center;
-    display: block;
-    width: 100%;
-}
-
-#home-page-btn {
-    float: right;
-}
-
-#sign-up-btn {
-    background-color: rgb(112, 20, 20);
-    color: white;
-    font-size: 35px;
-    width: 150px;
-    height: 100px;
-    border-radius: 12px;
-    font-family: 'Dancing Script', cursive;
-}
-
-#login-btn {
-    background-color: rgb(112, 20, 20);
-    color: white;
-    font-size: 40px;
-    width: 150px;
-    height: 100px;
-    border-radius: 12px;
-    font-family: 'Dancing Script', cursive;
-}
-
-#home-page-btn {
-    background-color: rgb(112, 20, 20);
-    color: white;
-    font-size: 22px;
-    width: 80px;
-    height: 50px;
-    border-radius: 12px;
-    font-family: 'Dancing Script', cursive;
-    font-weight: bold;
-}
-
-#create-account-title {
-    color: white;
-    text-align: center;
-    font-family: 'Dancing Script', cursive;
-    text-shadow: 2px 2px 4px #000000;
-    font-weight: bold;
-    font-size: 35px;
+#login-button {
+    padding-top: 45px;
 }
 
 #validation-errors {
@@ -92,8 +59,9 @@ body{
     color: greenyellow
 }
 
-#font {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: black;
+#email, #password {
+    border: 1px solid white;
+    background-color: white;
+    color: #000000;
+    opacity: 1; /* Firefox */
 }
-

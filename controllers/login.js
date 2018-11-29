@@ -108,29 +108,33 @@ module.exports = function(app, passport) {
     app.post('/login', function(req, res) {
         passport.authenticate(
           'local',
-          { failureRedirect: '/login', session: false },
+          { failureRedirect: '/login.html', session: false },
           (error, user) => {
             if (error || !user) {
                 res.status(401)
                  .json({ error: "Invalid Email or password" });
             }
-      
-            const payload = {
-                userId: user.user_id, 
-                userName: user.User_Name,
-                expires: Date.now() + parseInt(process.env.JWT_EXPIRATION_MS),
-            };
-      
-            req.login(payload, {session: false}, (error) => {
-              if (error) {
-                res.status(400)
-                   .send({ error });
-              }
-              const token = jwt.sign(JSON.stringify(payload), privateKEY);
-      
-              res.cookie('session', token, { httpOnly: true, secure: true });
-              res.redirect("/");
-            });
+
+            if(user) {
+                const payload = {
+                    userId: user.user_id, 
+                    userName: user.User_Name,
+                    expires: Date.now() + parseInt(process.env.JWT_EXPIRATION_MS),
+                };
+          
+                req.login(payload, {session: false}, (error) => {
+                    console.log("Attempting to log in");
+                  if (error) {
+                    res.status(400)
+                       .json({ error });
+                  }
+                  const token = jwt.sign(JSON.stringify(payload), privateKEY);
+          
+                  res.cookie('session', token, { httpOnly: true, secure: true });
+                  res.status(200)
+                     .json({});
+                });    
+            }
           },
         )(req, res);
     });
