@@ -47,11 +47,11 @@ body {
     font-weight: 300;
     line-height: 1.5;
     color: var(--text-color);
-    /* background: var(--bg-color); */
-    background-image: url("../src/calendarbackground.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
+    background: url("../src/calendarbackground.jpg") no-repeat center center fixed; 
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
 }
 
 header {
@@ -282,4 +282,10 @@ h2.MuiTypography-title-88 {
 
 #endtime {
   padding-top: 21px;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
