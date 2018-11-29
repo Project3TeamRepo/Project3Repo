@@ -1,0 +1,67 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    background-image: url('../images/background-2462434_1920.jpg');
+}
+
+#title {
+    text-align:center;
+}
+
+.container {
+    padding: 50px;
+}
+
+p {
+    text-align: center;
+}
+
+label {
+    color: white;
+}
+
+#accountform {
+    width: 400px;
+    height: 440px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px;
+    background-color: #03A596;
+    opacity: 0.7;
+    border-radius: 3px;
+    color: white;
+    font-size: 22px;
+}
+
+#submit {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    background-color: #f0412c;
+    width: 200px;
+}
+
+#login-button {
+    padding-top: 45px;
+}
+
+#validation-errors {
+    color: red;
+    text-shadow: 2px 2px 4px #000000;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#information {
+    color: greenyellow
+}
+
+#email, #password {
+    border: 1px solid white;
+    background-color: white;
+    color: #000000;
+    opacity: 1; /* Firefox */
+}
