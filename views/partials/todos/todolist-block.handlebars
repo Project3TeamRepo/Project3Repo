@@ -1,8 +1,17 @@
-
-  <li data-id="{{this.id}}" class="list-group-item">
+ <!--make it so completed items are displayed in lighter font color and with a strikethrough over the text-->
+ <!--but that doesn't mean to always get old completed items,-->
+ <!--just whatever items where getted today and then completed today-->
+ <!--allow them to remain on the list but be obviously complete (with css styling)-->
+    {{#each todos}}
+        {{#unless this.Todo_Status}}
+        <li data-id="{{this.id}}" 
+            class="list-group-item T"
+        >
             <b>Task:</b> {{Todo_Name}}
             <br /> <b>Date:</b> {{Todo_Date}}
             <br /> <b>Info:</b> {{Todo_Info}}
             <br /> <b>Location:</b> {{Todo_Location}}
-  </li>
 
+        </li>
+        {{/unless}}
+    {{/each}}

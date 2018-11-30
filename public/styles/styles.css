@@ -1,5 +1,6 @@
 .list-group-item {
-  line-height: 2.5;
+  width: 100%;
+  line-height: 1.5rem;
 }
  
 body {
@@ -28,16 +29,10 @@ nav a {
   background-color: black !important;
 }
 
-
-
 .dropdown-menu {
   color: coral;
 
 }
-
-/* .searchbutton {
-  color: blue
-} */
 
 .ui-datepicker th {
   width: 500px;
@@ -77,15 +72,12 @@ nav a {
   height: 3000px;
   margin: auto;
   display: flex;
-  /* position: absolute;  */
  }  
 
  .ui-datepicker {
   display: none;
   width: 70%;
-  /* padding: 35px; */
   cursor: default;
-
   text-transform: uppercase;
   font-family: Tahoma;
   font-size: 20px;
@@ -211,18 +203,8 @@ nav a {
 
 }
 
-#event_add_container {
-  visibility: hidden;
-  padding: 6px;
-  background: rgb(247, 198, 180);
-  width: 320px;
-  border: 2px solid coral;
-  box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2), 0 7px 20px 0 rgb(0,0,0.17); 
-  position: relative; top: 23px; left: 23px;
-}
-
-#event_view_container {
-  visibility: hidden;
+#event_detail_container {
+  visibility: hidden; height: 0;
   padding: 6px;
   background: #FFF;
   width: 320px;

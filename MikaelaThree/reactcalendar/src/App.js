@@ -2,6 +2,8 @@ import React from "react";
 
 import ReactCalendar from "./reactCalendar";
 
+import Footer from "./components/Footer"
+
 import "./App.css";
 
 class App extends React.Component {
@@ -19,10 +21,10 @@ class App extends React.Component {
         <main>
           <ReactCalendar />
         </main>
+          <Footer />
       </div>
     );
   }
 }
 
 export default App;
-

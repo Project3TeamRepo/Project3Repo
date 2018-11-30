@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Log In</title>
+
+  <!---Favicon-->
+  <link rel="icon" href="images/family.png" type="image" sizes="16x16">
+
+  <link rel="stylesheet" href="styles/login.css">
+
+    <!--Bootstrap-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+  crossorigin="anonymous">
+
+<!--JQuery-->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!-- Materialize-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript for Materialize -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <!--Font Awesome-->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+    crossorigin="anonymous">
+
+  <!--Material.io-->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700;">
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+</head>
+<body>
+
+        <nav>
+                <div class="nav-wrapper #fb8c00 orange darken-1">
+                        <a class="brand-logo"><i class="material-icons">
+                                date_range</i>
+                              Ultimate<strong>Organizer</strong> </a>
+                  <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="/login.html">Log In</a></li>
+              
+                  </ul>
+                </div>
+              </nav>
+              <div class="container">
+              <form id="account-form" action="/register" method="POST" onsubmit="submitForm(event);">
+                <div id="accountform">
+                      <p>Create Member Account</p>
+                <div class="form-group">
+                    <label for="name" style="color:white;font-size:15px">Name</label>
+                    <input type="name" class="form-control" id="name" placeholder="Your Name">
+                </div>
+                <div class="form-group">
+                    <label for="cellphone" style="color:white;font-size:15px">Phone Number</label>
+                    <input type="cellphone" class="form-control" id="cellphone" placeholder="Phone Number">
+                </div>
+                <div class="form-group">
+                    <label for="email"style="color:white;font-size:15px">E-mail</label>
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted"></small>
+                </div>
+                <div class="form-password">
+                    <label for="password" style="color:white;font-size:15px">Create Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Password">
+                </div>
+                <div id="submit-button">
+              <button id="submit" type="submit" class="btn btn-primary">Create Account</button>
+              </div>
+            </form>
+          </div>
+</body>
+<script>
+        function submitForm(ev) {
+          ev.preventDefault();
+          const formElement = $("#account-form");
+          const data = { name: $("#name").val(), cellphone: $("#cellphone").val(), email: $("#email").val(), password: $("#password").val()};
+          const request = $.ajax({
+            type: "post",
+            url: formElement.attr("action"),
+            dataType: "json",
+            data: data
+          });
+      
+          request.done(function(response) {
+            window.location.replace("/");
+          });
+      
+          request.fail(function(xhr, statusText) {
+            if(xhr.statusCode / 300 < 1)
+              alert("error found");
+          });
+      
+          return false;
+        }
+      
+        $.ajaxSetup({
+            statusCode: {
+                401: function(){
+      //            alert("error found - general call");          
+                }
+            }
+        });
+      </script>      
+</html>

@@ -30,12 +30,9 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         Todo_Status: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             defaultValue: 0,
             allowNull: false,
-            validate: {
-                len: [1,20]
-            }
         },
         User_Id: {
             type: DataTypes.INTEGER,

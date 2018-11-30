@@ -1,0 +1,181 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    background-image: url('../images/background-2462434_1920.jpg');
+}
+
+.container {
+    padding: 50px;
+}
+
+p {
+    text-align: center;
+}
+
+label {
+    color: white;
+}
+
+.material-icons {
+    font-family: 'Material Icons', serif;
+    font-style: normal;
+    display: inline-block;
+    text-align: center;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+   
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+   }
+
+  .material-icons.md-24 {
+    font-size: 24px;
+    text-align: center;
+    color: white;
+    line-height: 3;
+   }
+   
+  
+
+.wrapper {
+    background-image: url('../images/iphone-410311_1280.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 100%;
+}
+
+.btn-lg {
+    height: 500px;
+    width: 300px;
+    font-size: 50px;
+}
+
+
+#title {
+
+    text-align:center;
+    
+}
+
+.jumbotron {
+    padding: 200px;
+    background-image: url('../images/background-2462434_1920.jpg');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    text-align: center;
+
+
+}
+
+#main-text {
+    text-align: center;
+}
+
+.header{
+
+    background-image: url('../images/calendar-background.jpg');
+    background-size: 50%;
+}
+
+.footer-copyright {
+
+text-align: center;
+}
+
+.footer-copyright  {
+    display: flex;
+  padding: 400px;
+    flex-direction: column;
+
+}
+
+.page-footer {
+    flex: 1 0 auto;
+}
+
+.card-img-top {
+    border-radius: 50%;
+}
+
+.main3 {
+
+    text-align: left;
+    word-wrap: normal;
+}
+
+.intro {
+
+}
+
+.title {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+text-align: center;
+
+
+}
+
+.icon {
+    background-image: url('../images/ultimate\ calendar2.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 450px;
+    background-position: center;
+    
+    text-align: center;
+    
+}
+
+.padding {
+    padding: 80px 0;
+}
+
+#plx {
+    background: url('../images/apple-pc.jpg');
+    background-repeat: no-repeat;
+    align-content: center;
+    display: table;
+    height: 60%;
+    width: 100%;
+    background-size: cover;
+}
+
+#accountform {
+    width: 400px;
+    height: 530px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px;
+    background-color: #03A596;
+    opacity: 0.7;
+    border-radius: 3px;
+    color: white;
+    font-size: 22px;
+}
+
+#submit, #create_account {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    background-color: #f0412c;
+    width: 200px;
+}
+
+#submit-button {
+    padding-top: 30px;
+}
+
+#email, #password, #name, #cellphone {
+    border: 1px solid white;
+    background-color: white;
+    color: #000000;
+    opacity: 1; /* Firefox */
+}
