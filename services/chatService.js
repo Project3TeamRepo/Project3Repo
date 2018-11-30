@@ -16,16 +16,16 @@ function listAllMembers() {
 }
 
 function findMember(userId) {
-    return Members.findbyId(userId).then(
+    return Members.findOne({where: {user_id: userId }}).then(
         member => {
             if(member) {
-                return resolve(member);
+                return member;
             } else {
-                return reject({error: "Member with id " + userId + " not found"});
+                return {error: "Member with id " + userId + " not found"};
             }
         }).catch( 
         error => {
-            return reject(error);
+            return error;
         }
     );
 }
@@ -35,74 +35,103 @@ function listAllChatRooms(userId) {
         member => {
             return member.getChatRooms({attributes: ['chat_room_id', 'chat_room_name', 'chat_room_description'], raw: true}).then(
                 chatRooms => {
-                    return resolve(chatRooms || []);
+                    return chatRooms || [];
                 }).catch(
                 error => {
-                    return reject(error);
+                    return error;
                 }
             );
         },
         error => {
-            return reject(error);
+            return error;
         }
     );
 }
 
+function findChatRoomByName(name) {
+    return ChatRooms.findOne({
+        where: {chat_room_name: name}, 
+        include: [{
+            model: Members,
+            as: 'creator'
+        }]
+      });
+}
+
+
 function createChatRoom(userId, name, description, members) {
-    return findMember(userId).then(
+    try {
+        console.log("Attempting to create chat room");
+        return findMember(userId).then(
         member => {
-            return ChatRooms.findOrCreate({where: {chat_room_name: name}, defaults: {chat_room_name: name, chat_room_description: description, creator: member}}, 
-                {
-                    include: [{
-                        model: Members,
-                        as: 'creator'
-                    }]
-            }).spread(
-                (chatRoom, created) => {
-                    if(created) {
-                        Promise.all([member.addChatroom(chatRoom), chatRoom.addMember(member)]).then(
-                            results => {
-                                if(members) {
-                                    return updateChatRoomMembers(userId, chatRoom.chat_room_id, members).then(
-                                        () => {
-                                            return resolve(chatRoom.chat_room_id);
+            console.log("Member found when creating chat room");
+                return findChatRoomByName(name).then(
+                    chatRoom => {
+                        if(!chatRoom) { // No chat room found. Create one
+                            return ChatRooms.create(
+                                {chat_room_name: name, chat_room_description: description, creator: member},
+                                {
+                                    include: [{
+                                    model: Members,
+                                    as: 'creator'
+                                }]            
+                              }).then(
+                                chatRoom => {
+                                    return Promise.all([member.addChatroom(chatRoom), chatRoom.addMember(member)]).then(
+                                        results => {
+                                            if(members) {
+                                                return updateChatRoomMembers(userId, chatRoom.chat_room_id, members).then(
+                                                    () => {
+                                                        return chatRoom.chat_room_id;
+                                                    }).catch(
+                                                    error => {
+                                                        return chatRoom.chat_room_id;
+                                                    }
+                                                );
+                                            } else {
+                                                return chatRoom.chat_room_id;
+                                            }
                                         }).catch(
                                         error => {
-                                            return resolve(chatRoom.chat_room_id);
+                                            return error;
                                         }
-                                    );
-                                } else {
-                                    return resolve(chatRoom.chat_room_id);
+                                    );    
                                 }
-                            }).catch(
-                            error => {
-                                return reject(error);
-                            }
-                        );
-                    } else {
-                        return chatRoom.getMembers().then(
-                            members => {
-                                if(members && members.filter(m => m.user_id === userId).length > 0) {
-                                    return resolve(chatRoom.chat_room_id);
-                                } else {
-                                    return reject({error: "User " + userId + " does not belong to chat room " + chatRoom.chat_room_id});
+                              ).catch(
+                                error => {
+                                    console.error("Error while retrieving chat room members: " + error);
+                                    return error;
                                 }
+                              );
+                        } else { // Found chat room. Check if user is member
+                            chatRoom.getMembers().then(
+                                members => {
+                                    if(members && members.filter(m => m.user_id === userId).length > 0) {
+                                        return chatRoom.chat_room_id;
+                                    } else {
+                                        return {error: "User " + userId + " does not belong to chat room " + chatRoom.chat_room_id};
+                                    }
                             }).catch(
-                            error => {
-                                return reject(error);
-                            }
-                        );
+                                error => {
+                                    console.error("Error while retrieving chat room members: " + error);
+                                    return error;
+                            });
+                        }
                     }
-                }).catch(
-                error => {
-                    return reject(error);
-                }
-            );
-        }).catch(
-        error => {
-            return reject(error);
-        }
-    );
+                ).catch(error => {
+                    console.error("Error while retrieving chat room: " + error);
+                    return error;
+                });
+            }).catch(
+            error => {
+                console.error("Error while retrieving chat room: " + error);
+                return error;
+            });
+    } catch(e) {
+        console.log("Error while creating chat room: " + e);
+        console.log(e.stack);
+        return {error: "Error while creating chat room: " + e};            
+    }
 }
 
 function getChatRoomForCreator(userId, chatRoomId) {

@@ -7,6 +7,7 @@ module.exports = function(app, passport) {
     // getUserId :: Request -> Promise[Integer, String] 
     function getUserId(req) {
         return new Promise((resolve, reject) => {
+            console.log(req.user);
             if(req && req.user && req.user.userId) {
                 resolve(req.user.userId);
             } else {
@@ -107,6 +108,7 @@ module.exports = function(app, passport) {
     //          500 -> Error while retrieving Member List
     //
     app.post("/chats", passport.authenticate('jwt', {session: false}), function(req, res) {
+        console.log("Attempting to create chat room " + req.body.name + " for user " + req.user.userId);
         getUserId(req).then(
             userId => {
                 if(req.params && isNonEmptyString(req.body.name)) {

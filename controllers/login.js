@@ -49,7 +49,7 @@ module.exports = function(app, passport) {
         secretOrKey: privateKEY,
       },
       (jwtPayload, done) => {
-        if (jwtPayload.expires > Date.now()) {
+        if (jwtPayload.expires < Date.now()) {
             return done('jwt expired');
         }
         return done(null, jwtPayload);
@@ -116,10 +116,11 @@ module.exports = function(app, passport) {
             }
 
             if(user) {
+                const expiration = Date.now() + parseInt(20 * 60 * 1000); 
                 const payload = {
                     userId: user.user_id, 
                     userName: user.User_Name,
-                    expires: Date.now() + parseInt(process.env.JWT_EXPIRATION_MS),
+                    expires: expiration
                 };
           
                 req.login(payload, {session: false}, (error) => {

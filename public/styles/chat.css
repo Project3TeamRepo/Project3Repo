@@ -1,0 +1,56 @@
+.row{
+    padding-top: 18px;
+    padding-right: 40px;
+    padding-left: 40px;
+}
+
+#members {
+    padding-top: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 40px;
+    height: 640px;
+    border: 5px solid #03a596;
+    background-color: white;
+    font-size: 20px;
+}
+
+#messages {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 10px;
+    height: 640px;
+    border: 5px solid #03a596;
+    background-color: white;
+    font-size: 20px;
+}
+
+p {
+    border-bottom: 1px solid gray;
+}
+
+#controls{
+    width: 830px;
+    min-height: 100px;
+    margin: 0px auto;
+    position: absolute;
+    bottom: -30px;
+  }
+  textarea{
+    resize: none;
+    width: 50px;
+  }
+
+  #textbox {
+    font-size: 15px;
+  }
+
+  #send{
+    height: 32px;
+    width: 55px;
+    font-size: 18px; 
+    bottom: 32px;
+    right: 26px;
+    position: absolute;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  }
