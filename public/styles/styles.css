@@ -1,9 +1,8 @@
-/* .list-group-item {
+.list-group-item {
   line-height: 2.5;
-} */
+}
  
 body {
-  
     min-width: 250px;
   } 
 
@@ -212,21 +211,24 @@ nav a {
 
 }
 
-#modalLogin{
-  position: absolute; top:2%; left:25%;
-  width: 30%;
-  margin: 15% auto;
- 
+#event_add_container {
   visibility: hidden;
-}
-
-#event_edit_container {
-  visibility: hidden;
-  background: coral;
+  padding: 6px;
+  background: rgb(247, 198, 180);
+  width: 320px;
   border: 2px solid coral;
   box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2), 0 7px 20px 0 rgb(0,0,0.17); 
-  position: relative;
-  top: 230px;
+  position: relative; top: 23px; left: 23px;
+}
+
+#event_view_container {
+  visibility: hidden;
+  padding: 6px;
+  background: #FFF;
+  width: 320px;
+  border: 2px solid rgb(77, 22, 2);
+  box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2), 0 7px 20px 0 rgb(0,0,0.17); 
+  position: fixed; top: 180px; left: 180px;
 }
 
 #ui-id-1 {
@@ -241,29 +243,20 @@ nav a {
 button.ui-dialog-titlebar-close {
   color: coral;
 }
+
  #form {
   position: relative;
   padding: 45px; 
 } 
 
-/* input [type=text] {
-  text-align: right;
-} */
-
-       
+input [type=text] {
+  text-align: left;
+  width: 200px;
+  height: 12px;
+} 
 
 .eventCreator {
   background: rgb(103,103,103,0.4);
   border: 1px solid #000;
 
-}
-
-#Login {
-  background-color: #f4f4f4;
-  margin: 20% auto;
-  padding: 20px;
-  box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2), 0 7px 20px 0 rgb(0,0,0.17); 
-  width: 30%;
-  margin: 15% auto;
-  position: absolute; top:2%; left:25%;
 }

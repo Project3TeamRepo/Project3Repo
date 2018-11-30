@@ -1,47 +1,31 @@
-$(function () {
-    $("#datepicker").datepicker({ dateFormat: 'dd/mm/yy' });
-});
+function openmodalAC() {
+    $("#event_add_container").css('visibility', 'visible');
+}
+function openmodalVC() {
+    $("#event_view_container").css('visibility', 'visible');
+}
 
-function openmodal() {
-    $("#event_edit_container").css('visibility', 'visible');
-    var $dialogContent = $("#event_edit_container");
+function newEvent(e) {
+    //    Ajax POST requests to /api/calendar
+    // Get value of date input
+    let dateInput = $('#datepicker').val()
+    //console.log(dateInput)
+    let type = $('#type').val()
+    let name = $('#name').val()
+    let info = $('#info').val()
+    let location = $('#location').val()
 
-    $dialogContent.dialog({
-        modal: true,
-        title: "Add This To My Calendar",
-        buttons: {
-            "Save": function () {
-                //    Ajax POST requests to /api/calendar
-                // Get value of date input
-                var dateInput = $('#datepicker').val()
-                //console.log(dateInput)
-                var type = $('#type').val()
-                var name = $('#name').val()
-                var info = $('#info').val()
-                var location = $('#location').val()
+    let eventObject = {
+        type: type,
+        name: name,
+        start_date: dateInput,
+        info: info,
+        location: location,
+        userid: 1
+    };
 
-                var eventObject = {
-                    type: type,
-                    name: name,
-                    start_date: dateInput,
-                    info: info,
-                    location: location,
-                    userid: 1
-                };
-                //console.log(eventObject);
-
-                $.post("/api/calendars", eventObject, function (res) {
-                    $dialogContent.dialog("close");
-                    $("#event_edit_container").css('visibility', 'hidden');
-                });
-
-            },
-
-
-            Cancel: function () {
-                $(this).dialog("close");
-            }
-        }
-    }).show();
-    $("#ui-datepicker-div").css("z-index", "9999");
+    $.post("/api/calendars", eventObject, function (res) {
+        console.log("res came back as "); console.log(res); console.log("===========");
+        $("#event_edit_container").css('visibility', 'hidden');
+    });
 }

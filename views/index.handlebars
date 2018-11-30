@@ -1,33 +1,98 @@
 <div id="home">
   <div class="container">
-    <div class="row">
-      <div class="col-8 offset-2">
-        <h1>{{msg}}</h1>
-        <h2>This is our Home Page!</h2>
-        <form class="clearfix mb-4" action="POST">
-          <div class="form-group">
-            <label for="example-text">Example Text</label>
-            <input type="text" id="example-text" class="form-control" aria-describedby="example-text" placeholder="Enter Example Text">
-          </div>
-          <div class="form-group">
-            <label for="example-description">Example Description</label>
-            <textarea class="form-control" id="example-description" aria-describedby="example-description" placeholder="Enter Example Description"></textarea>
-          </div>
-          <button id="submit" class="btn btn-primary float-right">Submit</button>
-        </form>
-        <h3>Examples:</h3>
-        <ul id="example-list" class="list-group">
-          {{#each examples}}
-          <li data-id="{{this.id}}" class="list-group-item">
-            <a href="example/{{this.id}}">{{this.text}}</a>
-            <button class="btn btn-danger float-right delete">ｘ</button>
-          </li>
-          {{/each}}
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+    <div class="row"><!--outer row to hold two columns-->
+    <div class="col-16" style="border: 1px solid yellow;"><!--outer column-->
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="/js/index.js"></script>
+      <div class="row"><!--inner row-->
+      <div class="col-6"><!--left column 30% of page-->
+        <div class="row"><!--to-do-list-->
+          <div id="todoDiv" class="header">
+            <h2 style="margin:5px">My To Do List</h2>
+            <input type="text" name="todoName" id="todoName" placeholder="Add A To Do...">
+            <input type="text" name="todoDate" id="todoDate" placeholder="date as mm/dd/yyyy">
+            <input type="text" name="todoInfo" id="todoInfo" placeholder="comments">
+            <input type="text" name="todoLocation" id="todoLocation" placeholder="location (optional)">
+            <span onclick="newTodo()" class="addBtn">Add</span>
+          </div>
+          <ul id="todoUL" class="list-group" style="border: 1px solid blue">
+           {{#each todos}}
+              {{> todos/todolist-block }}
+           {{/each}}
+          </ul>
+        </div><!--end row for to-do-list-->
+
+        <div class="row"><!--shopping-list-->
+          <div id="shoppingDiv" class="header">
+            <h2 style="margin:5px">Shopping List</h2>
+            <input type="text" name="shoppingName" id="shoppingName" placeholder="Add to shopping list..." />
+            <input type="text" name="shoppingQuantity" id="shoppingQuantity" placeholder="quantity" />
+            <input type="text" name="shoppingLocation" id="shoppingLocation" placeholder="location (store)" />
+            <span onclick="newShopping()" class="addBtn">Add</span>
+          </div>
+          <ul id="shoppingUL" class="list-group" style="border: 1px solid red">
+            {{#each shopping}}
+              {{> shopping/shopping-block }}
+            {{/each}}
+          </ul>
+        </div><!--end row for shopping list-->
+      </div><!--end left column 30% of page-->
+<div><a href="javascript:openmodalAC();">Add an Event</a></div>
+<div id="event_add_container">
+  <form>
+    <table>
+      <tr>
+        <th style="text-align: left;">Date:</th>
+        <td style="text-align: left;"><input type="text" id="datepicker" name="datepicker"></td>
+      </tr>
+      <tr>
+        <th style="text-align: left:">Type:</th>
+        <td style="text-align: left;">
+          <select id="type" name="type">
+            <option value=0 SELECTED>-event type-</option>
+            <option value=1>Birthday</option>
+            <option value=2>Appointment</option>
+            <option value=3>Hobby</option>
+            <option value=4>Social</option>
+            <option value=5>School Work</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th style="text-align: left:">Name:</th>
+        <td style="text-align: left;"><input type="text" id="name" name="name"></td>
+      </tr>
+      <tr>
+        <th style="text-align: left:">Info:</th>
+        <td style="text-align: left;"><input type="text" id="info" name="info"></td>
+      </tr>
+      <tr>
+        <th style="text-align: left:">Location:</th>
+        <td style="text-align: left;"><input type="text" id="location" name="location"></td>
+      </tr>
+      <tr>
+        <th style="text-align: left:"> </th>
+        <td style="text-align: left;"><button onclick="newEvent()">Save</button></td>
+      </tr>
+    </table>
+
+  </form>
+</div>
+      <div class="col-10"><!--right column 70% of page-->
+        <div class="row">  
+          <div id="calendarDiv" class="header">
+            <h2 style="margin:5px">Calendars:</h2>
+          </div>
+          <ul id="calendarUL" class="list-group">
+            {{#each calendars}}
+              {{> calendars/calendar-block }}
+            {{/each}}
+          </ul>
+        </div>
+      </div><!--end right column 70% of page-->
+    </div><!--end inner row-->
+
+    </div><!--end outer column-->
+    </div><!--end outer row-->
+
+  </div><!--end container-->
+</div><!--end home-->
