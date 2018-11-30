@@ -7,9 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Ultimate Organizer</title>
 
-  <!--Google OAuth Meta Tag-->
-  <meta name="google-signin-client_id" content="440670470339-4krcl4icqdd607fio2dbcaae2tbvit9q.apps.googleusercontent.com">
-
+ 
   <!---Favicon-->
   <link rel="icon" href="images/family.png" type="image" sizes="16x16">
 
@@ -71,7 +69,7 @@
 
     <div class="row">
       <div class="col-sm-6">
-        <img src="images/date-night.png" style="width:70%;">
+        <img src="images/date-night.png" class= "img-fluid" style="width:70%;">
       </div>
 
       <div class="col-sm-6" text-center>
@@ -107,7 +105,7 @@
       </div>
 
       <div class="col-sm-6">
-        <img src="images/bbq.png" style="width:100%;">
+        <img src="images/bbq.png" class= "img-fluid" style="width:100%;">
       </div>
 
 
@@ -126,7 +124,7 @@
     <br>
     <div class="row">
       <div class="col-sm-6">
-        <img src="images/bicycle-1296063_640.png" style="width:100%;">
+        <img src="images/bicycle-1296063_640.png" class= "img-fluid" style="width:100%;">
       </div>
 
       <div class="col-sm-6" text-center>
@@ -191,7 +189,7 @@
 
   <!--parallaxing effect-->
   <div class="parallax-container">
-    <div class="parallax"><img src="images/tablet-pllx.jpg"></div>
+    <div class="parallax"><img src="images/tablet-pllx.jpg" class= "img-fluid"></div>
   </div>
 
 
@@ -204,7 +202,7 @@
 
         <div class="row">
           <div class="col-sm-6">
-            <img src="images/cool-family.jpg" style="width:70%;">
+            <img src="images/cool-family.jpg" class= "img-fluid" style="width:70%;">
           </div>
 
           <div class="col-sm-6" text-center>
@@ -236,8 +234,7 @@
             <li><a class="grey-text text-lighten-3" id="authorize-button">Login</a></li>
             <li><a class="grey-text text-lighten-3" id="signout-button">Log Out</a></li>
 
-            <button id="authorize-button">Log In</button>
-            <button id="signout-button">Log Out</button>
+          
 
           </ul>
         </div>
@@ -252,30 +249,7 @@
 
   <script src="./js/like_button.js"></script>
 
-  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
-
-  <script>
-
-    function renderButton() {
-      gapi.signin2.render('my-signin2', {
-        'scope': 'profile email',
-        'longtitle': true,
-        'theme': 'dark',
-        'onsuccess': setGoogleDetails,
-        'onfailure': onFailure
-      });
-    }
-
-    function onFailure(error) {
-      console.log(error);
-    }
-
-    function setGoogleDetails(user) {
-
-      console.log(user.getBasicProfile());
-    }
-
-  </script>
+  
 
   <!---GoogleOAUTH-->
   <!-- <script type="text/javascript">
