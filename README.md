@@ -6,7 +6,7 @@ If you answered yes to even one question above, then this app may be perfect for
 The Ultimate organizer will help you organize your familiy's To Do Lists, Chores, Errands, Shopping Lists, plus more. 
 
 
-## This is Google calendar on steroids. 
+## This is Google Calendar on steroids. 
 
 ![image](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3famiyfunctions.PNG)
 
