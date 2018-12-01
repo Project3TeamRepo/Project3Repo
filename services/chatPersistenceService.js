@@ -7,7 +7,8 @@ const Messages = db.chat_messages;
 let ChatModel = {
     chatRooms: ChatRooms,
     members: Users,
-    messages: Messages
+    messages: Messages,
+    sequelize: db.sequelize
 };
 
 module.exports = ChatModel;
