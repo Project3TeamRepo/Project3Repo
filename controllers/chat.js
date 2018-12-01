@@ -4,16 +4,15 @@ module.exports = function(app, passport) {
 
     // Gets User ID from session.
     //
-    // getUserId :: Request -> Promise[Integer, String] 
-    function getUserId(req) {
-        return new Promise((resolve, reject) => {
-            console.log(req.user);
-            if(req && req.user && req.user.userId) {
-                resolve(req.user.userId);
-            } else {
-                reject("User not logged in");
-            }
-        });
+    // getUserId :: Request -> Promise[Either[String, Integer]]
+    async function getUserId(req) {
+        if(req && req.user && req.user.userId) {
+            console.log("User found in session scope");
+            return { userId: req.user.userId };
+        } else {
+            console.warn("User not found in session scope. Session is expired or user has not logged in");
+            return { error: "User not logged in" };
+        }
     }
 
     // Checks if a provided value is a String and it's not empty.
@@ -34,20 +33,23 @@ module.exports = function(app, passport) {
     //          200 -> Member List found
     //          500 -> Error while retrieving Member List
     //
-    app.get("/members", passport.authenticate('jwt', {session: false}), function(req, res) {
-        console.log( Object.getOwnPropertyNames(chatService.listAllMembers));
-        chatService.listAllMembers().then(
-            members => {
-                console.log("About to respond with members");
-                res.status(200)
-                   .json({members: members});
-            }).catch(
-            error => {
-                console.error("Error requesting member list: " + JSON.stringify(error));
-                res.status(500)
-                   .json({error: "Could not retrieve member list"});
-            }
-        );
+    app.get("/members", passport.authenticate('jwt', {session: false}), async function(req, res) {
+      try {
+        const { members, error } = await chatService.listAllMembers();
+        if(!error) {
+          console.log("About to respond with members");
+          res.status(200)
+            .json({ members: members });
+        } else {
+          console.error("Error requesting member list: " + JSON.stringify(error));
+          res.status(500)
+            .json({ error: "Could not retrieve member list" });
+        }
+      } catch (error) {
+        console.error("Error requesting member list: " + JSON.stringify(error));
+        res.status(500)
+          .json({ error: "Could not retrieve member list" });
+      }
     });
 
     // GET /chats
@@ -65,27 +67,30 @@ module.exports = function(app, passport) {
     //          401 -> Member not logged in
     //          500 -> Error while retrieving Member List
     //
-    app.get("/chats", passport.authenticate('jwt', {session: false}), function(req, res) {
-        getUserId(req).then(
-            userId => {
-                return chatService.listAllChatRooms(userId).then(
-                    chatRooms => {
-                        res.status(200)
-                           .json({chatRooms: chatRooms});
-                    }).catch(
-                    error => {
-                        console.error("Could not retrieve the list of chat rooms: " + JSON.stringify(error));
-                        res.status(500)
-                           .json({error: "Could not retrieve the list of chat rooms available"});
-                    }
-                );
-            }).catch(
-            error => {
-                console.log("User not found in session: " + error);
-                res.status(401)
-                   .json({error: "User not found in session"});
-            }
-        );
+    app.get("/chats", passport.authenticate('jwt', {session: false}), async function(req, res) {
+      try {
+        const { userId, error } = await getUserId(req);
+        if(!error && userId) {
+          const { chatRooms, error } = await chatService.listAllChatRooms(userId);
+          if(!error && chatRooms) {
+            res.status(200)
+               .json({chatRooms: chatRooms});
+          } else {
+            console.error("Could not retrieve the list of chat rooms: " + JSON.stringify(error));
+            res.status(500)
+               .json({error: "Could not retrieve the list of chat rooms available"});
+          }
+        } else {
+          console.warn("User not found in session: " + error);
+          res.status(401)
+             .json({error: "User not found in session"});
+        }
+      } catch (error) {
+        console.error(error.stack);
+        res.status(500)
+           .json({error: "Error while processing the request: " + error});
+
+      }
     });
 
     // POST /chats
@@ -107,35 +112,39 @@ module.exports = function(app, passport) {
     //          401 -> Member not logged in
     //          500 -> Error while retrieving Member List
     //
-    app.post("/chats", passport.authenticate('jwt', {session: false}), function(req, res) {
+    app.post("/chats", passport.authenticate('jwt', {session: false}), async function(req, res) {
+
+      try {
         console.log("Attempting to create chat room " + req.body.name + " for user " + req.user.userId);
-        getUserId(req).then(
-            userId => {
-                if(req.params && isNonEmptyString(req.body.name)) {
-                    return chatService.createChatRoom(userId, req.body.name, req.body.description, req.body.members).then(
-                        chatRoom => {
-                            res.setHeader('Location', '/chats/' + chatRoom + '/');
-                            res.status(201)
-                               .json({});                    
-                        }).catch(
-                        error => {
-                            console.log("Error while creating chat room: " + JSON.stringify(error));
-                            res.status(500)
-                               .json({error: "Unable to create chat room"});
-                        }
-                    );
-                } else {
-                    console.log("No name provided in request");
-                    res.status(400)
-                       .json({error: "No name provided", fields: ['name']});
-                }
-            }).catch(
-            error => {
-                console.log("User not found in session: " + error);
-                res.status(401)
-                   .json({error: "User not found in session"});
+        const { userId, error } = await getUserId(req);
+        if(!error && userId) {
+          if(req.params && isNonEmptyString(req.body.name)) {
+            const { chatRoom, error } = await chatService.createChatRoom(userId, req.body.name, req.body.description, req.body.members);
+            if(!error && chatRoom) {
+              res.setHeader('Location', '/chats/' + chatRoom.chat_room_id + '/');
+              res.status(201)
+                .json({});
+            } else {
+              console.log("Error while creating chat room: Unable to process request");
+              res.status(500)
+                .json({error: "Unable to create chat room"});
             }
-        );
+          } else {
+            console.log("No name provided in request");
+            res.status(400)
+              .json({error: "No name provided", fields: ['name']});
+          }
+        } else {
+          console.warn("User not found in session: " + error);
+          res.status(401)
+            .json({error: "User not found in session"});
+        }
+      } catch (error) {
+        console.error(error.stack);
+        console.error("Error while creating chat room: " + JSON.stringify(error));
+        res.status(500)
+          .json({error: "Unable to create chat room"});
+      }
     });
 
     // Close an existing chat room
@@ -157,31 +166,39 @@ module.exports = function(app, passport) {
     //          401 -> Member not logged in
     //          500 -> Error while trying to delete the chat room
     //
-    app.delete("/chats/:chatRoom", passport.authenticate('jwt', {session: false}), function(req, res) {
+    app.delete("/chats/:chatRoom", passport.authenticate('jwt', {session: false}), async function(req, res) {
+      try {
+        const { userId, error } = await getUserId(req);
+        if(!error && userId) {
+          if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
+            const { error } = await chatService.closeChatRoom(userId, req.params.chatRoom);
+            if(!error) {
+              res.status(200)
+                 .json({});
+            } else {
+              console.log("Error while deleting chat room: " + JSON.stringify(error));
+              res.status(500)
+                .json({error: "Unable to delete chat room"});
+            }
+          } else {
+            console.log("No chat room provided in request");
+            res.status(400)
+              .json({error: "Invalid chat room provided", fields: ['chatRoom']});
+          }
+        } else {
+          console.warn("User not found in session: " + error);
+          res.status(401)
+            .json({error: "User not found in session"});
+        }
+      } catch(error) {
+        console.error(error.stack);
+        res.status(500)
+          .json({error: "Unable to process request: " + error});
+      }
         getUserId(req).then(
             userId => {
-                if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
-                    return chatService.closeChatRoom(userId, req.params.chatRoom).then(
-                        () => {
-                            res.status(200)
-                               .json({});                    
-                        }).catch(
-                        error => {
-                            console.log("Error while creating chat room: " + JSON.stringify(error));
-                            res.status(500)
-                               .json({error: "Unable to create chat room"});
-                        }
-                    );
-                } else {
-                    console.log("No chat room provided in request");
-                    res.status(400)
-                       .json({error: "Invalid chat room provided", fields: ['chatRoom']});
-                }            
             }).catch(
             error => {
-                console.log("User not found in session: " + error);
-                res.status(401)
-                   .json({error: "User not found in session"});
             }
         );
     });
@@ -207,33 +224,38 @@ module.exports = function(app, passport) {
     //          401 -> Member not logged in
     //          500 -> Error while trying to retrieve messages from chat room
     //
-    app.get("/chats/:chatRoom", passport.authenticate('jwt', {session: false}), function(req, res) {
-        getUserId(req).then(
-            userId => {
-                if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
-                    return chatService.getChatRoomInformation(userId, req.params.chatRoom).then(
-                        chatRoomInfo => {
-                            res.status(200)
-                               .json(chatRoomInfo);                    
-                        }).catch(
-                        error => {
-                            console.log("Error while retrieving messages from chat room: " + JSON.stringify(error));
-                            res.status(500)
-                               .json({error: "Unable to retrieve messages from chat room"});
-                            }
-                    );
-                } else {
-                    console.log("No chat room provided in request");
-                    res.status(400)
-                       .json({error: "Invalid chat room provided", fields: ['chatRoom']});
-                }            
-            }).catch(
-            error => {
-                console.log("User not found in session: " + error);
-                res.status(401)
-                   .json({error: "User not found in session"});
+    app.get("/chats/:chatRoom", passport.authenticate('jwt', {session: false}), async function(req, res) {
+      try {
+        const { userId, error } = await getUserId(req);
+
+        if(!error && userId) {
+          if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
+            const { chatRoomInfo, error } = await chatService.getChatRoomInformation(userId, req.params.chatRoom);
+            if(!error && chatRoomInfo) {
+              res.status(200)
+                 .json(chatRoomInfo);
+            } else {
+              const message = (error) ? error : "Error while retrieving information from chat room";
+              console.error(message);
+              res.status(500)
+                 .json({ error: message });
             }
-        );
+          } else {
+            console.log("No chat room provided in request");
+            res.status(400)
+              .json({error: "Invalid chat room provided", fields: ['chatRoom']});
+          }
+
+        } else {
+          console.warn("User not found in session: " + error);
+          res.status(401)
+            .json({error: "User not found in session"});
+        }
+      } catch(error) {
+        console.error(error.stack);
+        res.status(500)
+           .json({error: "Unable to retrieve messages from chat room"});
+      }
     });
 
     // Get all messages from an especific chat room

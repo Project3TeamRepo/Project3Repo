@@ -100,7 +100,7 @@ module.exports = function(app, passport) {
     //         401 => Wrong user or wrong password
     //         500 => Server error 
     //
-    app.post('/login', function(req, res) {
+    app.post('/login', async function(req, res) {
         passport.authenticate(
           'local',
           { failureRedirect: '/login.html', session: false },
