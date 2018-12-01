@@ -31,18 +31,6 @@ When you want to add something to the calendar, simply click on your desired day
 ![image](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3addnewevent.png)
 
 
-
-# Live Link
-(click image)<br>
-<a href="https://testprojecttwo.herokuapp.com/">
-    <img src="organizerLogoWide.png">
-</a>
-
-# GITS
-<a href="https://github.com/Project-Team4/Project2-Team-3.git">-github</a>
-<a href="https://git.heroku.com/testprojecttwo.git">-heroku</a>
-
-
 # Technologies Used
 * mySQL
 * Sequelize
@@ -66,12 +54,5 @@ When you want to add something to the calendar, simply click on your desired day
 
 
 
-# Live Link
-
-Get started by clicking the link below. 
-(click image)<br>
-<a href="https://testprojecttwo.herokuapp.com/">
-    <img src="organizerLogoWide.png">
-</a>
 
 
