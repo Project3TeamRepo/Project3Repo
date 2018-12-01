@@ -18,29 +18,17 @@ Keep your family organized and in sync with one simple calendar app. Keep readin
 
 To get started, simply create an account. Don't worry about having to memorize yet another password. We've created this app to integrate seamlessly with your Google profile. 
 
-[photo of login]
+![image](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3createaccount.png)
 
-Once you've logged in, you'll be brought to your very own calendar where you can start adding tasks. 
+## Once you've logged in, you'll be brought to your very own calendar where you can start adding tasks. 
 
 ![image](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3calendar.png)
 
 
 
-When you want to add something to the calendar, simply click on your desired day and add a new event.
+## When you want to add something to the calendar, simply click on your desired day and add a new event.
 
 ![image](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3addnewevent.png)
-
-
-
-# Live Link
-(click image)<br>
-<a href="https://testprojecttwo.herokuapp.com/">
-    <img src="organizerLogoWide.png">
-</a>
-
-# GITS
-<a href="https://github.com/Project-Team4/Project2-Team-3.git">-github</a>
-<a href="https://git.heroku.com/testprojecttwo.git">-heroku</a>
 
 
 # Technologies Used
@@ -66,12 +54,5 @@ When you want to add something to the calendar, simply click on your desired day
 
 
 
-# Live Link
-
-Get started by clicking the link below. 
-(click image)<br>
-<a href="https://testprojecttwo.herokuapp.com/">
-    <img src="organizerLogoWide.png">
-</a>
 
 
