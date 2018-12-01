@@ -20,13 +20,13 @@ To get started, simply create an account. Don't worry about having to memorize y
 
 ![image](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3createaccount.png)
 
-Once you've logged in, you'll be brought to your very own calendar where you can start adding tasks. 
+## Once you've logged in, you'll be brought to your very own calendar where you can start adding tasks. 
 
 ![image](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3calendar.png)
 
 
 
-When you want to add something to the calendar, simply click on your desired day and add a new event.
+## When you want to add something to the calendar, simply click on your desired day and add a new event.
 
 ![image](https://github.com/shayshae5482/Responsive-Portfolio/blob/master/assets/images/project3addnewevent.png)
 
