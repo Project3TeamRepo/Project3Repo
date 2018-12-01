@@ -279,37 +279,43 @@ module.exports = function(app, passport) {
     //          401 -> Member not logged in
     //          500 -> Error while trying to retrieve messages from chat room
     //
-    app.get("/chats/:chatRoom/messages", passport.authenticate('jwt', {session: false}), function(req, res) {
-        getUserId(req).then(
-            userId => {
-                if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
-                    let messageCount = undefined;
-                    if(req.query && req.query.messages && !isNaN(req.query.messages) && req.query.messages > 0) {
-                        messageCount = req.query.messages;
-                    } 
-                    return chatService.getMessages(userId, req.params.chatRoom, messageCount).then(
-                        messages => {
-                            res.status(200)
-                               .json({messages: messages});                    
-                        }).catch(
-                        error => {
-                            console.log("Error while retrieving messages from chat room: " + JSON.stringify(error));
-                            res.status(500)
-                               .json({error: "Unable to retrieve messages from chat room"});
-                            }
-                    );
-                } else {
-                    console.log("No chat room provided in request");
-                    res.status(400)
-                       .json({error: "Invalid chat room provided", fields: ['chatRoom']});
-                }            
-            }).catch(
-            error => {
-                console.log("User not found in session: " + error);
-                res.status(401)
-                   .json({error: "User not found in session"});
+    app.get("/chats/:chatRoom/messages", passport.authenticate('jwt', {session: false}), async function(req, res) {
+
+      try {
+        const { userId, error } = await getUserId(req);
+        if(!error && userId) {
+          if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
+            let messageCount = undefined;
+            if(req.query && req.query.messages && !isNaN(req.query.messages) && req.query.messages > 0) {
+              messageCount = req.query.messages;
             }
-        );
+
+            const { messages, error } = await chatService.getMessages(userId, req.params.chatRoom, messageCount);
+
+            if(!error && messages) {
+              res.status(200)
+                 .json({messages: messages});
+            } else {
+              const message = (error) ? error : "Error while retrieving messages from chat room";
+              console.error(message);
+              res.status(500)
+                 .json({ error: message });
+            }
+          } else {
+            console.log("No chat room provided in request");
+            res.status(400)
+              .json({error: "Invalid chat room provided", fields: ['chatRoom']});
+          }
+        } else {
+          console.log("User not found in session: " + error);
+          res.status(401)
+             .json({error: "User not found in session"});
+        }
+      } catch(error) {
+        console.error(error);
+        res.status(500)
+           .json({ error: "Error while retrieving messages from chat room: " + error });
+      }
     });
 
     // Send a message to an especific chat room
@@ -333,41 +339,48 @@ module.exports = function(app, passport) {
     //          401 -> Member not logged in
     //          500 -> Error while trying to post messages to chat room
     //
-    app.post("/chats/:chatRoom/messages", passport.authenticate('jwt', {session: false}), function(req, res) {
-        getUserId(req).then(
-            userId => {
-                if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
-                    if(req.body && isNonEmptyString(req.body.messageText)) {
-                        return chatService.postMessageInRoom(userId, req.params.chatRoom, req.body.messageText).then(
-                            () => {
-                                res.status(200)
-                                .json({});                     
-                            }).catch(
-                            error => {
-                                console.log("Error while posting message in chat room: " + JSON.stringify(error));
-                                res.status(500)
-                                   .json({error: "Unable to post message in chat room"});
-                            }
-                        );
-                    }
-                    else {
-                        console.log("No message text provided in request");
-                        res.status(400)
-                           .json({error: "Invalid message text provided", fields: ['messageText']});    
-                    }
-                } 
-                else {
-                    console.log("No chat room provided in request");
-                    res.status(400)
-                       .json({error: "Invalid chat room provided", fields: ['chatRoom']});
-                }
-            }).catch(
-            error => {
-                console.log("User not found in session: " + error);
-                res.status(401)
-                   .json({error: "User not found in session"});
+    app.post("/chats/:chatRoom/messages", passport.authenticate('jwt', {session: false}), async function(req, res) {
+
+      try {
+        const { userId, error } = await getUserId(req);
+
+        if(!error && userId) {
+          if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
+            if(req.body && isNonEmptyString(req.body.messageText)) {
+
+              const { message, error } = await chatService.postMessageInRoom(userId, req.params.chatRoom, req.body.messageText);
+
+              if(!error && message) {
+                res.status(200)
+                   .json({});
+              } else {
+                const message = (error) ? error : "Error while posting message in chat room";
+                console.error(message);
+                res.status(500)
+                  .json({ error: message });
+              }
             }
-        );
+            else {
+              console.log("No message text provided in request");
+              res.status(400)
+                .json({error: "Invalid message text provided", fields: ['messageText']});
+            }
+          }
+          else {
+            console.log("No chat room provided in request");
+            res.status(400)
+              .json({error: "Invalid chat room provided", fields: ['chatRoom']});
+          }
+        } else {
+          console.log("User not found in session: " + error);
+          res.status(401)
+            .json({error: "User not found in session"});
+        }
+      } catch(error) {
+        console.error(error);
+        res.status(500)
+           .json({ error: "Error while retrieving messages from chat room: " + error });
+      }
     });
 
     // Update chat room members
@@ -391,41 +404,36 @@ module.exports = function(app, passport) {
     //          401 -> Member not logged in
     //          500 -> Error while trying to post messages to chat room
     //
-    app.put("/chats/:chatRoom", passport.authenticate('jwt', {session: false}), function(req, res) {
-        getUserId(req).then(
-            userId => {
-                if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
-                    if(req.body && req.body.members) {
-                        return chatService.updateChatRoomMembers(userId, req.params.chatRoom, req.body.members).then(
-                            () => {
-                                res.status(200)
-                                .json({});                     
-                            }).catch(
-                            error => {
-                                console.log("Error while updating chat room member list: " + JSON.stringify(error));
-                                res.status(500)
-                                   .json({error: "Unable to post message in chat room"});
-                            }
-                        );
-                    }
-                    else {
-                        console.log("No members provided in request");
-                        res.status(400)
-                           .json({error: "Invalid member list provided", fields: ['members']});    
-                    }
-                } 
-                else {
-                    console.log("No chat room provided in request");
-                    res.status(400)
-                       .json({error: "Invalid chat room provided", fields: ['chatRoom']});
-                }
-            }).catch(
-            error => {
-                console.log("User not found in session: " + error);
-                res.status(401)
-                   .json({error: "User not found in session"});
+    app.put("/chats/:chatRoom", passport.authenticate('jwt', {session: false}), async function(req, res) {
+
+      try {
+        const { userId, error } = await getUserId(req);
+
+        if(!error && userId) {
+          if(req.params && isNonEmptyString(req.params.chatRoom) && !isNaN(req.params.chatRoom)) {
+            if(req.body && req.body.members) {
+              await chatService.updateChatRoomMembers(userId, req.params.chatRoom, req.body.members);
+              res.status(200).json({});
+            } else {
+              console.log("No members provided in request");
+              res.status(400)
+                .json({error: "Invalid member list provided", fields: ['members']});
             }
-        );
+          } else {
+            console.log("No chat room provided in request");
+            res.status(400)
+              .json({error: "Invalid chat room provided", fields: ['chatRoom']});
+          }
+        } else {
+          console.log("User not found in session: " + error);
+          res.status(401)
+            .json({error: "User not found in session"});
+        }
+      } catch(error) {
+        console.error(error.stack);
+        res.status(500)
+           .json({error: "Unable to post message in chat room"});
+      }
     });
 
 };

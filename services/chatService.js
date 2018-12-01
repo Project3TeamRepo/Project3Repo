@@ -3,6 +3,7 @@ const chatPersistence = require('./chatPersistenceService.js');
 const Members = chatPersistence.members;
 const ChatRooms = chatPersistence.chatRooms;
 const sequelize = chatPersistence.sequelize;
+const Messages = chatPersistence.messages;
 
 async function listAllMembers() {
   try {
@@ -162,36 +163,46 @@ async function closeChatRoom(userId, chatRoomId) {
   }
 }
 
-function getMessages(userId, chatRoomId, messageCount) {
-    return getChatRoomForMember(userId, chatRoomId).then(
-        chatRoomWithMember => {
-            return chatRoomWithMember.chatRoom.getMessages(
-                {
-                    include: [{
-                        model: Members,
-                        as: 'author'
-                    }],
-                    attributes: ['message_id', 'message_text', 'message_time_stamp'],
-                    joinTableAttributes: ['User_Name'], 
-                    raw: true
-                }).then(
-                    messages => {
-                        if(messageCount) {
-                            const messagesToReturn = Math.min(messageCount, messages.length);
-                            return resolve(messages.slice().reverse().slice(0, messagesToReturn).reverse());
-                        } else {
-                            return resolve(messages);
-                        }
-                    }).catch(
-                    error => {
-                        return reject(error);
-                    }
-            );
-        }).catch(
-        error => {
-            return reject(error);
+async function getMessages(userId, chatRoomId, messageCount) {
+
+  try {
+    const { chatRoom, error } = await getChatRoomForMember(userId, chatRoomId);
+    if(!error && chatRoom) {
+      const messages = await chatRoom.getMessages(
+        {
+          include: [{
+            model: Members,
+            as: 'author'
+          }],
+          attributes: ['message_id', 'message_text', 'message_time_stamp'],
+          joinTableAttributes: ['User_Name'],
+          raw: true
+        });
+      if(messages) {
+        let messageResult = messages.map( m => { return {
+          message_id: m.message_id,
+          message_text: m.message_text,
+          message_time_stamp: m.message_time_stamp,
+          author: m["author.User_Name"] }
+        });
+        if(messageCount) {
+          const messagesToReturn = Math.min(messageCount, messageResult.length);
+          return { messages: messageResult.slice().reverse().slice(0, messagesToReturn).reverse() };
+        } else {
+          return { messages: messageResult };
         }
-    );
+      } else {
+        return { messages: [] };
+      }
+    } else {
+      const message = "Unable to retrieve chat room";
+      console.error(message);
+      return { error: error };
+    }
+  } catch(error) {
+    console.error(error.stack);
+    return { error: error };
+  }
 }
 
 async function getChatRoomForMember(userId, chatRoomId) {
@@ -218,29 +229,28 @@ async function getChatRoomForMember(userId, chatRoomId) {
   }
 }
 
-function postMessageInRoom(userId, chatRoomId, messageText) {
-    return getChatRoomForMember(userId, chatRoomId).then(
-        chatRoomWithMember => {
-            let currentDateTime = new Date();
-            return Messages.create({message_text: messageText, message_time_stamp: currentDateTime, author: chatRoomWithMember.member}, 
-                {
-                    include: [{
-                        model: Members,
-                        as: 'author'
-                    }]
-            }).then(
-                message => {
-                    return chatRoomWithMember.chatRoom.addMessage(message);
-                }).catch(
-                error => {
-                    return reject(error);
-                }
-            );
-        }).catch(
-        error => {
-            return reject(error);
-        }
-    );
+async function postMessageInRoom(userId, chatRoomId, messageText) {
+
+  try {
+    const { chatRoom, error } = await getChatRoomForMember(userId, chatRoomId);
+    if(!error && chatRoom) {
+      let currentDateTime = new Date();
+      const message = await Messages.create(
+        {
+          message_text: messageText,
+          message_time_stamp: currentDateTime,
+          author_user_id: userId,
+          chatroom_chat_room_id: chatRoomId
+        });
+      return { message: message };
+    } else {
+      const message = "Cannot post on a chat you're not a member of";
+      return { error: message };
+    }
+  } catch(error) {
+    console.error(error.stack);
+    return { error: error };
+  }
 }
 
 //
@@ -291,8 +301,8 @@ async function updateChatRoomMembers(userId, chatRoomId, members) {
         sanitizedMemberList = isMemberPresent(userId, members) ? members : members.concat(userId);
       }
       const memberObjects = await Promise.all(sanitizedMemberList.map(mId => findMember(mId)));
-      await updateChatMembers(newChatRoom, memberObjects);
-      return { chatRoom: newChatRoom };
+      await updateChatMembers(chatRoom, memberObjects);
+      return { chatRoom: chatRoom };
     } else {
       const message = (error) ? error : "Unable to process request";
       console.error(message);
