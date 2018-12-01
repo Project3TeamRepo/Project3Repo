@@ -10,33 +10,30 @@ module.exports = function(app, passport) {
 
     const privateKEY  = fs.readFileSync('./config/keys/private.key', 'utf8');
 
-    var db = require("../models");
+    const db = require("../models");
 
     passport.use(new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
       }, async (email, password, done) => {
         try {
-            db.users.findOne({where: {Email: email, Password: password}, raw: true}).then(
-                user => {
-                    if(user) {
-                        return done(null, user);
-                    } else {
-                        return done('Incorrect Username / Password');
-                    }
-                }, 
-                error => {
-                    console.error("Unable to retrieve user: " + JSON.stringify(error));
-                    return done('Incorrect Username / Password');
-                } 
-            );
+          console.log("Checking for user by email and password");
+          const member = await db.users.findOne({where: {Email: email, Password: password}, raw: true});
+          if(member) {
+            console.log("User and password correct");
+            return done(null, member);
+          } else {
+            console.log("Incorrect user / password");
+            return done('Incorrect Username / Password');
+          }
         } catch (error) {
+            console.error(error.stack);
             done(error);
         }
       }));
 
-      const cookieExtractor = function(req) {
-          var token = null;
+    const cookieExtractor = function(req) {
+          let token = null;
           if (req && req.cookies)
           {
             token = req.cookies['session'];
@@ -49,7 +46,7 @@ module.exports = function(app, passport) {
         secretOrKey: privateKEY,
       },
       (jwtPayload, done) => {
-        if (jwtPayload.expires > Date.now()) {
+        if (jwtPayload.expires < Date.now()) {
             return done('jwt expired');
         }
         return done(null, jwtPayload);
@@ -65,34 +62,32 @@ module.exports = function(app, passport) {
     //         401 => Wrong user or wrong password
     //         500 => Server error 
     //
-    app.post('/register', function(req, res) {
+    app.post('/register', async function(req, res) {
+      try {
         console.log("Attempting to register");
         const { name, email, cellphone, password } = req.body;
 
-        db.users.findOne({where: {Email: email}, raw: true}).then(
-            user => {
-                if(!user) {
-                    db.users.create({User_Name: name, Email: email, Password: password, Cell_Phone: cellphone}).then(
-                        user => {
-                            res.status(201)
-                               .json({});
-                        },
-                        error => {
-                            console.error("Unable to create user: " + JSON.stringify(error));
-                            res.status(500)
-                               .send({error: "Unable to create user"});
-                        }
-                    );
-                } else {
-                    res.status(400)
-                       .send({error: "A user already exists with that email address"});
-                }
-            },
-            error => {
-                console.error("Unable to create user: " + JSON.stringify(error));
-                res.status(500)
-                   .send({error: "Unable to create user"});}
-        );
+        const userByEmail = await db.users.findOne({where: {Email: email}, raw: true});
+
+        if(!userByEmail) {
+          const user = await db.users.create({User_Name: name, Email: email, Password: password, Cell_Phone: cellphone});
+          if(user) {
+            res.status(201)
+              .json({});
+          } else {
+            console.error("Unable to create user");
+            res.status(500)
+              .send({error: "Unable to create user"});
+          }
+        } else {
+          res.status(400)
+            .send({error: "A user already exists with that email address"});
+        }
+      } catch (e) {
+        console.error("Unable to create user: " + JSON.stringify(e));
+        res.status(500)
+          .send({error: "Unable to create user"});
+      }
     });
 
 
@@ -105,7 +100,7 @@ module.exports = function(app, passport) {
     //         401 => Wrong user or wrong password
     //         500 => Server error 
     //
-    app.post('/login', function(req, res) {
+    app.post('/login', async function(req, res) {
         passport.authenticate(
           'local',
           { failureRedirect: '/login.html', session: false },
@@ -116,10 +111,11 @@ module.exports = function(app, passport) {
             }
 
             if(user) {
+                const expiration = Date.now() + parseInt(20 * 60 * 1000); 
                 const payload = {
                     userId: user.user_id, 
                     userName: user.User_Name,
-                    expires: Date.now() + parseInt(process.env.JWT_EXPIRATION_MS),
+                    expires: expiration
                 };
           
                 req.login(payload, {session: false}, (error) => {
