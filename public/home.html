@@ -7,9 +7,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Ultimate Organizer</title>
 
-  
+  <!--Google OAuth Meta Tag-->
+  <!--meta name="google-signin-client_id" content="440670470339-4krcl4icqdd607fio2dbcaae2tbvit9q.apps.googleusercontent.com"-->
+
   <!---Favicon-->
-  <link rel="icon" href="images/family.png" type="image" sizes="16x16">
+  <link rel="icon" href="images/calendar-159098_640.png" type="image" sizes="16x16">
 
 
   <!--Bootstrap-->
@@ -40,12 +42,10 @@
 </head>
 
 <nav>
-  <div class="nav-wrapper #fb8c00 orange darken-1">
-    <a class="brand-logo"><i class="material-icons">
-        date_range</i>
-      Ultimate<strong>Organizer</strong> </a>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li><a href="/login.html">Login</a></li>
+  <div class="nav-wrapper #fb8c00 orange darken-1" data-target="mobile-demo" class="sidenav-trigger">
+    <a href="./home.html" class="brand-logo"><i class="material-icons">date_range</i>Ultimate<strong>Organizer</strong> </a>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="./login.html">Login</a></li>
       <li><a href="/logout">Log Out</a></li>
 
     </ul>
@@ -59,17 +59,17 @@
     <p class="lead"></p>
     <hr class="my-4">
     <p></p>
-    <a class="btn btn-primary btn-lg" href="#" role="button">Create a free account</a>
+    <a class="btn btn-primary btn-lg" href="./create_account.html" role="button">Create a free account</a>
   </div>
 
 
 
 
-  <div class="container">
+  <div class="container-fluid">
 
     <div class="row">
       <div class="col-sm-6">
-        <img src="images/date-night.png" class= "img-fluid" style="width:70%;">
+        <img src="images/date-night.png" class="img-fluid" style="width:70%;">
       </div>
 
       <div class="col-sm-6" text-center>
@@ -105,7 +105,7 @@
       </div>
 
       <div class="col-sm-6">
-        <img src="images/bbq.png" class= "img-fluid" style="width:100%;">
+        <img src="images/bbq.png" class="img-fluid" style="width:100%;">
       </div>
 
 
@@ -119,12 +119,12 @@
   <hr>
 
 
-  <div class="container">
+  <div class="container-fluid">
 
     <br>
     <div class="row">
       <div class="col-sm-6">
-        <img src="images/bicycle-1296063_640.png" class= "img-fluid" style="width:100%;">
+        <img src="images/bicycle-1296063_640.png" class="img-fluid" style="width:100%;">
       </div>
 
       <div class="col-sm-6" text-center>
@@ -145,32 +145,11 @@
 
   <hr>
 
-  <!---- <div id="react-app"></div>
 
-
-    <div class="row">
-        <div class="col s12 m7">
-          <div class="card">
-            <div class="card-image">
-              <img src="images/sample-1.jpg">
-              <span class="card-title">Card Title</span>
-            </div>
-            <div class="card-content">
-              <p>I am a very simple card. I am good at containing small bits of information.
-              I am convenient because I require little markup to use effectively.</p>
-            </div>
-            <div class="card-action">
-              <a href="#">This is a link</a>
-            </div>
-          </div>
-        </div>
-      </div>-->
-
-  <!--ICONS SECTION-->
 
   <div class="padding">
 
-    <div class="container">
+    <div class="container-fluid">
 
       <div class="title">
         <h3>You don't need a smart home to ease chaos.</h3>
@@ -179,17 +158,27 @@
         <h6>The Ultimate Organizer gives you an easy-to-use system your whole family will love.</h6>
         <h6>Take a look below at how this digital organizer can help you. </h6>
 
-      </div>
 
-      <div class="icon">
-        <!----<img src="images/icons.png" style="align-content: center">-->
+        <img src="images/ultimate calendar2.png" class="img-fluid">
       </div>
     </div>
   </div>
 
   <!--parallaxing effect-->
   <div class="parallax-container">
-    <div class="parallax"><img src="images/tablet-pllx.jpg" class= "img-fluid"></div>
+    <div class="parallax"><img src="images/family-pllx.jpg" class= "img-fluid"></div>
+  </div>
+  <div class="section white #fafafa grey lighten-5">
+    <div class="row container">
+      <br>
+      <h2 class="header">Get your family on the same page with a click of a button.</h2>
+      
+      <br>
+      <br>
+    </div>
+  </div>
+  <div class="parallax-container">
+    <div class="parallax"><img src="images/tablet-pllx.jpg" class="img-fluid"></div>
   </div>
 
 
@@ -197,19 +186,19 @@
   <div class="padding">
     <div class="container">
       <div class="cta">
-        <h3> Get started today for free!</h3>
+        <h3> No Muss, No Fuss!</h3>
 
 
         <div class="row">
           <div class="col-sm-6">
-            <img src="images/cool-family.jpg" class= "img-fluid" style="width:70%;">
+            <img src="images/cool-family.jpg" class="img-fluid" style="width:70%;">
           </div>
 
           <div class="col-sm-6" text-center>
             <h3>Get Your Family Organized</h3>
             <p class="lead"> Be the cool, calm, collected family that's prepared for anything. Create an account today
               to get started. </p>
-
+            <a class="btn btn-primary btn-lg" href="./create_account.html" role="button">Create a free account</a>
           </div>
         </div>
 
@@ -218,7 +207,7 @@
     </div>
   </div>
 
-  <div id="my-signin2"></div>
+  <div id="my-signin2" class="img-fluid"></div>
 
   </div>
   </div>
@@ -231,10 +220,10 @@
         <div class="col l4 offset-l2 s12">
           <h5 class="white-text"></h5>
           <ul>
-            <li><a class="grey-text text-lighten-3" id="authorize-button">Login</a></li>
-            <li><a class="grey-text text-lighten-3" id="signout-button">Log Out</a></li>
 
-          
+            <li><a href="./login.html" class="grey-text text-lighten-3">Login</a></li>
+            <li><a href="/logout" class="grey-text text-lighten-3">Log Out</a></li>
+
 
           </ul>
         </div>
@@ -249,7 +238,7 @@
 
   <script src="./js/like_button.js"></script>
 
-  
+
 
   <!---GoogleOAUTH-->
   <!-- <script type="text/javascript">

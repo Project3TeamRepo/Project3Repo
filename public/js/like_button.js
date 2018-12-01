@@ -21,3 +21,11 @@
   $(document).ready(function(){
     $('.parallax').parallax();
   });
+
+  //Responsive Navbar
+  $(document).ready(function(){
+    $('.sidenav').sidenav();
+  });
+        
+
+  

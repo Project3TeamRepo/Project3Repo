@@ -5,7 +5,7 @@
     <title>Log In</title>
 
   <!---Favicon-->
-  <link rel="icon" href="images/family.png" type="image" sizes="16x16">
+  <link rel="icon" href="images/calendar-159098_640.png" type="image" sizes="16x16">
 
   <link rel="stylesheet" href="styles/login.css">
 
@@ -37,11 +37,11 @@
 
         <nav>
                 <div class="nav-wrapper #fb8c00 orange darken-1">
-                        <a class="brand-logo"><i class="material-icons">
+                        <a href="./home.html" class="brand-logo"><i class="material-icons">
                                 date_range</i>
                               Ultimate<strong>Organizer</strong> </a>
                   <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="/login.html">Log In</a></li>
+                    <li><a href="./login.html">Log In</a></li>
               
                   </ul>
                 </div>
@@ -72,6 +72,8 @@
               </div>
             </form>
           </div>
+
+          
 </body>
 <script>
         function submitForm(ev) {
@@ -86,7 +88,7 @@
           });
       
           request.done(function(response) {
-            window.location.replace("/");
+            window.location.replace("/calendar");
           });
       
           request.fail(function(xhr, statusText) {

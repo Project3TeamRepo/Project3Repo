@@ -5,7 +5,7 @@
     <title>Log In</title>
 
   <!---Favicon-->
-  <link rel="icon" href="images/family.png" type="image" sizes="16x16">
+  <link rel="icon" href="images/calendar-159098_640.png" type="image" sizes="16x16">
 
   <link rel="stylesheet" href="styles/login.css">
 
@@ -37,7 +37,7 @@ crossorigin="anonymous">
 
         <nav>
                 <div class="nav-wrapper #fb8c00 orange darken-1">
-                    <a class="brand-logo"><i class="material-icons">
+                    <a href="./home.html" class="brand-logo"><i class="material-icons">
                         date_range</i>
                       Ultimate<strong>Organizer</strong> </a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -63,12 +63,37 @@ crossorigin="anonymous">
                     <br>
                     <br>
                   <p style="font-size:15px">Don't have an account?</p>
-                  <div style="padding-top:8px id="login-button">
+                  <div style="padding-top:8px id=login-button">
                   <button id="create_account" type="submit" class="btn btn-primary" onclick="redirectToCreateAccount(event);">Create Account</button>
                   </div>
                   </div>
                 </form>
               </div>
+
+              <footer class="page-footer #f57c00 orange darken-2">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col l6 s12">
+                        <h5 class="white-text">The Ultimate Organizer</h5>
+                      </div>
+                      <div class="col l4 offset-l2 s12">
+                        <h5 class="white-text"></h5>
+                        <ul>
+              
+                          <li><a href="./login.html" class="grey-text text-lighten-3">Login</a></li>
+                          <li><a href="/logout" class="grey-text text-lighten-3">Log Out</a></li>
+              
+              
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="footer-copyright">
+                    <div class="container">
+                      © 2018 Copyright. All Rights Reserved.
+                    </div>
+                  </div>
+                </footer>
 </body>
 <script>
 
@@ -110,4 +135,5 @@ crossorigin="anonymous">
       }
   });
 </script>
+
 </html>
